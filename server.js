@@ -17,7 +17,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
-    flash = require('connect-flash'),
+    // flash = require('connect-flash'),
     session = require('express-session'),
     // favicon = require('serve-favicon'),
     compress = require('compression'),
@@ -163,7 +163,7 @@ function afterResourceFilesLoad() {
 
 
     // connect flash for flash messages - should be declared after sessions
-    app.use(flash());
+    // app.use(flash());
 
     // should be declared after session and flash
     app.use(helpers(pjson.name));
