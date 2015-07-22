@@ -1,0 +1,22 @@
+extends ../layouts/mobile
+
+block body
+  .container
+    .row
+      .col-md-4.col-xm-12.col-xs-12
+        .logo
+          img(src='/img/logo.png', alt='')
+        .content
+          h1.text-center(style="color: black") Action Required!
+          p.text-center
+            | Hello #{user.email}
+          p.text-center
+            | Grant (#{oauth_client.name}) authorization to your tagChief account.
+          form(action="/oauth/authorize/decision",method="post")
+            input(name="transaction_id" ,type="hidden", value="#{transactionId}")
+
+            input(type="hidden",value="#{queryAuth.email}", name="email")
+            input(type="hidden",value="#{queryAuth.password}",name="password")
+            div
+              button#allow.btn.btn-success.btn-block(type="submit", value="Allow") Allow
+              button#deny.btn.btn-danger.btn-block(type="submit", value="Deny", name="cancel") Deny

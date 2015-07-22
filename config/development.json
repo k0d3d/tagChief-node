@@ -1,0 +1,13 @@
+{
+    "db": {
+        "server": "localhost",
+        "database": "tagChief",
+        "port": 27017,
+        "user": "",
+        "pass": ""
+    },
+    "app": {
+        "name": "TagChief Mobile",
+        "home": "tagChief-node"
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "foundTaggedLocations" : {
+    "title": "{locationCount} tagged locations around you.",
+    "body": "You might want to check in"
+
+  },
+  "checkIntoLocation" : {
+    "title": "You are in {locationName} right?",
+    "body": "You might want to check in."
+  },
+  "testGCM": {
+    "title": "Testing tagChief GCM",
+    "body": "Device is registered and pushing is a success"
+  }
+}

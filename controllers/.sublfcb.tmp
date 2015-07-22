@@ -1,0 +1,122 @@
+var TCLocations = require('../models/device'),
+    errors = require('../lib/errors'),
+    GPushMessenger = require('../lib/gcm'),
+    // lingua = require('lingua'),
+    _ = require('lodash'),
+    User = require('../models/user');
+    // Reviews = require('../models/reviews');
+
+
+
+
+
+module.exports.routes = function (app) {
+
+  app.post('/api/v1/hereiam', function (req, res, next) {
+    var lingua = res.locals.lingua;
+    console.log(lingua);
+    if (!req.body.coords.latitude || !req.body.coords.longitude) {
+      return res.json(400).status(errors.nounce('InvalidParams').toJSON());
+    }
+    var us = new User(), coordsInRequest = [parseFloat(req.body.coords.latitude), parseFloat(req.body.coords.longitude)];
+    // console.log(us);
+    // res.json(us);
+    us.saveLastSeen(req.user._id,  coordsInRequest)
+    .then(function (userData) {
+      res.json(true);
+      var dev = new TCLocations();
+      dev.listLocationsByParams(req.user._id, coordsInRequest, {
+        listType: 'countPlacesNearBy',
+        pushResults: req.query.pushResults || false
+      })
+      .then(function (locationList) {
+        //should send push notifications
+        if (locationList.length) {
+          dev.getUserDevices(req.user._id)
+          .then(function (lidz) {
+            if (lidz.length) {
+              var regIds = _.pluck(lidz, 'registerationId');
+              console.log('lingua.foundTaggedLocations.title');
+              var gPush = new GPushMessenger(regIds);
+              gPush.queueMessage(
+                'lingua.foundTaggedLocations.title({locationCount: locationList.length})',
+                'Check In to Any of These',
+                'CHECKIN'
+              );
+              // gPush.sendMessage(function () {
+              //   // res.json(true);
+              // });
+            } else {
+              // res.status(400).json(errors.nounce("InvalidParams").toJSON());
+              console.log(errors.nounce("InvalidParams").toJSON());
+            }
+          }, function (err) {
+            console.log('Device Search Failed');
+            // next(err);
+          });
+
+        } else {
+         console.log('No Locations Found');
+         res.status(200).json([]);
+        }
+      }, function (err) {
+        next(err);
+      });
+      // res.status(200).json(userData);
+    }, function (err) {
+      console.log(err);
+      next(err);
+    });
+  });
+
+  app.post('/api/v1/locations', function (req, res, next) {
+    var dev = new TCLocations();
+    dev.addTagLocation(req.body, req.user._id)
+    .then(function () {
+      return res.status(200).json(true);
+    }, function (err) {
+      next(err);
+    });
+  });
+
+  app.get('/api/v1/locations/:locationId', function (req, res, next) {
+    var dev = new TCLocations();
+    dev.getOneLocation(req.params.locationId)
+    .then(function (ld) {
+      return q.resolve(ld);
+    }, function (err) {
+      return q.reject(err);
+    });
+  });
+
+  //this should load locations,
+  //some locations could be based on proximity,
+  //some based on locations the user has checked into
+  app.get('/api/v1/locations', function (req, res, next) {
+    var dev = new TCLocations();
+    dev.listLocationsByParams(req.user._id, [parseFloat(req.query.lat), parseFloat(req.query.lon)], {
+      limit: req.query.loadPerRequest
+    })
+    .then(function (locationList) {
+      //should send push notifications
+     res.status(200).json(locationList);
+    }, function (err) {
+      next(err);
+    });
+  });
+  //this should load locations,
+  //some locations could be based on proximity,
+  //some based on locations the user has checked into
+  app.get('/api/v1/position', function (req, res, next) {
+    var dev = new TCLocations();
+    dev.whatsAroundMe(req.user._id, [parseFloat(req.query.lat), parseFloat(req.query.lon)], {
+      limit: req.query.loadPerRequest
+    })
+    .then(function (locationList) {
+      //should send push notifications
+     res.status(200).json(locationList);
+    }, function (err) {
+      next(err);
+    });
+  });
+};

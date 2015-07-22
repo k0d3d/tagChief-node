@@ -1,0 +1,17 @@
+{
+    "db": {
+        "server": "localhost",
+        "database": "documents",
+        "port": 27017,
+        "user": "",
+        "pass": ""
+    },
+    "app": {
+        "name": "IXIT - File Sharing and Hosting",
+        "home": "dk33p"
+    },
+    "es" : {
+        "url": "192.168.56.2",
+        "port": 9200
+    }
+}

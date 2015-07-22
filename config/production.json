@@ -1,0 +1,30 @@
+{
+    "db": {
+        "url": "mongodb://heroku_app33864268:oufojfnkdt6dj8hjmqlsqe6e2u@ds041651.mongolab.com:41651/heroku_app33864268",
+        "user": "heroku_app33864268",
+        "password": "oufojfnkdt6dj8hjmqlsqe6e2u",
+        "database": "heroku_app33864268",
+        "port": 41651,
+        "server": "ds041651.mongolab.com"
+        },
+    "express":{
+        "secret": "H&H#BDMSU@(@nsika*W@}{SA(*@",
+        "cors" : {
+          "options" : {
+            "origin": "*",
+            "methods": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE"
+            ],
+            "credentials": true,
+            "maxAge": 3600
+          }
+        }
+    },
+    "app": {
+        "name": "Tag Chief API Server",
+        "server": "stark-cliffs-8842.herokuapp.com"
+    }
+}

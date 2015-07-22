@@ -1,0 +1,80 @@
+[
+
+  {
+    "name": "FileNotFoundError",
+    "defaultMessage": "The requested file could not be found",
+    "defaultExplanation": "The file could not be found",
+    "defaultResponse": "Verify the file exists and retry the operation",
+    "code": 601
+  },
+  {
+    "name": "FolderNotFoundError",
+    "defaultMessage": "The requested folder could not be found",
+    "defaultExplanation": "The folder could not be found",
+    "defaultResponse": "Verify the folder exists and retry the operation",
+    "code": 602
+  },
+  {
+    "name": "FolderRemoveError",
+    "defaultMessage": "The requested folder could not be deleted",
+    "defaultExplanation": "The folder could not be found",
+    "defaultResponse": "Verify the folder exists and retry the operation",
+    "code": 603
+  },
+  {
+    "name": "FolderHasError",
+    "defaultMessage": "The requested folder could not be deleted",
+    "defaultExplanation": "The folder contains files or folders",
+    "defaultResponse": "Please delete all files or folders within",
+    "code": 604
+  },
+  {
+    "name": "UploadHasError",
+    "defaultMessage": "The upload operation failed with errors.",
+    "defaultExplanation": "An error occured during the file upload.",
+    "defaultResponse": "Error has been logged and Admin notified",
+    "code": 605
+  },
+  {
+    "name": "UpdateFailed",
+    "defaultMessage": "No document was found or updated.",
+    "defaultExplanation": "Possibly removed or wrong id supplied",
+    "defaultResponse": "Error has been logged and Admin notified",
+    "code": 606
+  },
+  {
+    "name": "RemoveFailed",
+    "defaultMessage": "No document was found or deleted.",
+    "defaultExplanation": "Possibly removed or wrong id supplied",
+    "defaultResponse": "Error has been logged and Admin notified",
+    "code": 607
+  },
+  {
+    "name": "InvalidParams",
+    "defaultMessage": "The request is not valid.",
+    "defaultExplanation": "Possibly wrong or incomplete parameters supplied",
+    "defaultResponse": "Error has been logged and Admin notified",
+    "code": 609
+  },  {
+    "name": "DocumentNotFound",
+    "defaultMessage": "No document was found.",
+    "defaultExplanation": "Possibly wrong or incomplete parameters supplied",
+    "defaultResponse": "Error has been logged and Admin notified",
+    "code": 609
+  },
+  {
+    "name": "RegisterUserExist",
+    "defaultMessage": "The user is already registered here.",
+    "defaultExplanation": "Someone else has this registration id on the platform",
+    "defaultResponse": "Try another Id, or contact support.",
+    "code": 610
+  },
+  {
+    "name": "RegistrationFailed",
+    "defaultMessage": "This action failed",
+    "defaultExplanation": "An internal server error occurred",
+    "defaultResponse": "Error has been logged and Admin notified",
+    "code": 611
+  }
+
+]
