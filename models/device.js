@@ -292,11 +292,12 @@ var deviceFn = {
     var dbQuery = CheckLog.find({
       locationId: params.locationId
     });
-    dbQuery.limit(params.rpp || 20);
+    // dbQuery.limit(params.rpp || 20);
+    dbQuery.limit(5);
     if (params.page) {
       dbQuery.skip(params.page * params.limit);
     }
-    dbQuery.sort('checkInTime');
+    dbQuery.sort({checkInTime: -1});
     dbQuery.populate({path: 'locationId', model: 'Location'});
     dbQuery.populate({path: 'userId', model: 'User', select: 'email firstname lastname phoneNumber'});
     dbQuery.exec(function (err, docs) {

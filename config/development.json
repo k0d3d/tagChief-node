@@ -1,13 +1,21 @@
 {
     "db": {
         "server": "localhost",
-        "database": "tagChief",
+        "database": "tagChiefStats",
         "port": 27017,
         "user": "",
         "pass": ""
     },
     "app": {
         "name": "TagChief Mobile",
-        "home": "tagChief-node"
+        "home": "tagChief-node",
+        "server": "http://localhost:3000/"
+    },
+    "tagChiefOAuth": {
+        "server" : "http://localhost:3333/",
+        "authenticationUrl" : "/api/v1/users/auth",
+        "clientCheckUrl" : "/api/v1/clients/%s?field_type=email",
+        "authorizationUrl" : "/oauth/token",
+        "redirectUrl": "/auth_callback"
     }
 }

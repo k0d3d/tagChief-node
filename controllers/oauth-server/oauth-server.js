@@ -33,7 +33,6 @@ oauthServer.serializeClient(function (client, done) {
 
 oauthServer.deserializeClient(function (id, done) {
     console.log('Deserializing Client');
-    console.log(id);
     var d = Q.defer(),
         oauth2 = new OAuth2();
 
@@ -200,6 +199,9 @@ function coreOAuth(app) {
     //fetches more infomation on a client application
     app.route('/api/v1/clients/:clientId')
     .get(function (req, res) {
+        if (!req.query.field_type) {
+            return res.status(400).json({err: 'Missing field_type'});
+        }
         var oauth2 = new OAuth2();
         function qBy (ft) {
             if (ft === 'id') {
@@ -213,11 +215,11 @@ function coreOAuth(app) {
             }
 
         }
+        // console.log(qBy, req.query.field_type);
         qBy(req.query.field_type)
         .then(function (r) {
             res.json(r);
         }, function (err) {
-            console.log(err);
             res.status(400).json(err);
         });
     })
@@ -239,7 +241,6 @@ function coreOAuth(app) {
         .then(function (r) {
             res.json(r);
         }, function (err) {
-            console.log(err);
             res.status(400).json(err);
         });
     });

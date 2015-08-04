@@ -14,7 +14,7 @@ var OAuthClientSchema = new Schema({
         default: Date.now
     },
     name: {type:String},
-    email: {type: String},
+    email: {type: String, required: true},
     callbackUrl: {type: String},
     clientKey: {type: String, unique: true},
     clientSecret: String,
@@ -38,7 +38,6 @@ OAuthClientSchema.statics = {
 OAuthClientSchema.pre('save', function(next) {
     if (!this.isNew) return next();
     this.clientKey = utils.uid(16);
-    console.log(this.clientKey);
     this.clientSecret = utils.uid(32);
     next();
 });

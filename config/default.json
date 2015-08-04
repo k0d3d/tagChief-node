@@ -22,6 +22,13 @@
           }
         }
     },
+    "tagChiefOAuth": {
+        "server" : "http://localhost:3333/",
+        "authenticationUrl" : "/api/v1/users/auth",
+        "clientCheckUrl" : "/api/v1/clients/%s?field_type=email",
+        "authorizationUrl" : "/oauth/token",
+        "redirectUrl": "/auth_callback"
+    },
     "mail" : {
         "defaultService": "postmark",
         "defaultSenderName" : "tagChief Support",

@@ -61,10 +61,10 @@ oAuthFunctions = {
         return d.promise;
     },
     findByClientEmail : function (email) {
+        console.log('by email');
         var d = Q.defer();
 
         OAuthClient.findOne({ email: email }, function (error, client) {
-            console.log(client);
             if (error) {
                 return d.reject(error);
             }
@@ -391,7 +391,6 @@ oAuthModel.prototype.switchTokens = function (client, request_token, redirectUri
 
 oAuthModel.prototype.findToken = function (accessToken) {
     var d = Q.defer();
-    console.log('message');
     oAuthFunctions.findOneAccessToken({
         token : accessToken
     })
