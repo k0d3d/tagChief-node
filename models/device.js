@@ -11,8 +11,26 @@
 
 
 var deviceFn = {
-  findCheckInFeedback: function findCheckInFeedback (checkInId) {
+  findCheckInFeedback: function findCheckInFeedback (params) {
+    var q = Q.defer();
+    FeedBackAnswers.find({
+      checkInId: "55b10250d0d09a0300366da8"
+      // checkInId: params.checkInId
+    })
+    .populate({path: 'checkInId', model: 'Checklog'})
+    .populate({path: 'checkInId.userId', model: 'User'})
+    .populate({path: 'checkInId.locationId', model: 'Location'})
+    .exec(function (err, docs) {
+          if (err) {
+            return q.reject(err);
+          }
+          if (!docs) {
+            return q.reject(errors.nounce('DocumentNotFound'));
+          }
+          return q.resolve(docs);
+    });
 
+    return q.promise;
   },
   query: function query (str) {
     var q = Q.defer();
@@ -730,9 +748,9 @@ function LocationDeviceObject () {
           }
 
           return q.resolve(doc);
-        });
+    });
 
-    q.resolve(body);
+    // q.resolve(body);
     return q.promise;
   };
 
@@ -787,6 +805,20 @@ function LocationDeviceObject () {
     return q.promise;
   };
 
+  LocationDeviceObject.prototype.getActivityCheckIn = function getActivityCheckIn (locationId, cid, queryString) {
+    var q = Q.defer();
 
+    deviceFn.findCheckInFeedback({
+      checkInId: cid,
+      locationId: locationId
+    })
+    .then(function (docs) {
+      q.resolve(docs);
+    }, function (err) {
+      q.reject(err);
+    });
+
+    return q.promise;
+  };
 
  module.exports = LocationDeviceObject;

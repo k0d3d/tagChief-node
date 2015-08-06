@@ -45,6 +45,10 @@ module.exports.routes = function (app) {
       task.task = ld.getLocationActivity;
       task.params = [req.params.locationId];
       break;
+      case 'checkin':
+      task.task = ld.getActivityCheckIn;
+      task.params = [req.params.locationId, req.query.cid, req.query];
+      break;
       default:
       task.task = ld.getLocationOverview;
       task.params = [req.params.locationId];
@@ -56,5 +60,10 @@ module.exports.routes = function (app) {
     }, function (err) {
       next(err);
     });
+  });
+
+  app.route('/api/v2/locations/:locationId/checkin/:checkId')
+  .get(function (req, res, next) {
+
   });
 };
