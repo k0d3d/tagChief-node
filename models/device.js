@@ -11,11 +11,27 @@
 
 
 var deviceFn = {
+  queryFeedback: function queryFeedback (params) {
+    params = params || {};
+    var q = Q.defer();
+    FeedBackAnswers.find(params)
+    .populate({path: 'checkInId', model: 'Checklog'})
+    .exec(function (err, docs) {
+          if (err) {
+            return q.reject(err);
+          }
+          if (!docs) {
+            return q.reject(errors.nounce('DocumentNotFound'));
+          }
+          return q.resolve(docs);
+    });
+    return q.promise;
+  },
   findCheckInFeedback: function findCheckInFeedback (params) {
     var q = Q.defer();
     FeedBackAnswers.find({
-      checkInId: "55b10250d0d09a0300366da8"
-      // checkInId: params.checkInId
+      // checkInId: "55b10250d0d09a0300366da8"
+      checkInId: params.checkInId
     })
     .populate({path: 'checkInId', model: 'Checklog'})
     .populate({path: 'checkInId.userId', model: 'User'})
