@@ -62,8 +62,14 @@ module.exports.routes = function (app) {
     });
   });
 
-  app.route('/api/v2/locations/:locationId/checkin/:checkId')
+  app.route('/api/v2/feedback')
   .get(function (req, res, next) {
-
+    var ld = new LocationsDevices();
+    ld.getFeedback(req.query)
+    .then(function (docs) {
+      return res.json(docs);
+    }, function (err) {
+      return next(err);
+    });
   });
 };

@@ -10,11 +10,34 @@
       _ = require('lodash');
 
 
+
 var deviceFn = {
+  recur_location_fetch: function recur_location_fetch (docs, popped, cb) {
+    var ob = docs.pop();
+    ob = ob.toObject();
+    popped = (popped && popped.length) ? popped : [];
+    deviceFn.findALocationById(ob.checkInId.locationId)
+    .then(function (loc) {
+      ob.locationData = loc;
+      popped.push(ob);
+      if (docs.length) {
+        deviceFn.recur_location_fetch(docs, popped, cb);
+      } else {
+        return cb(popped);
+      }
+    }, function (err) {
+      if (docs.length) {
+        deviceFn.recur_location_fetch(docs, popped, cb);
+      } else {
+        return cb(popped);
+      }
+    });
+  },
   queryFeedback: function queryFeedback (params) {
     params = params || {};
     var q = Q.defer();
     FeedBackAnswers.find(params)
+    .limit(30)
     .populate({path: 'checkInId', model: 'Checklog'})
     .exec(function (err, docs) {
           if (err) {
@@ -23,7 +46,16 @@ var deviceFn = {
           if (!docs) {
             return q.reject(errors.nounce('DocumentNotFound'));
           }
-          return q.resolve(docs);
+
+          if(docs.length) {
+
+            deviceFn.recur_location_fetch(docs, [], function (poppedDoc) {
+              return q.resolve(poppedDoc);
+            });
+
+          } else {
+            return q.resolve([]);
+          }
     });
     return q.promise;
   },
@@ -307,7 +339,7 @@ var deviceFn = {
     if (params.page) {
       dbQuery.skip(params.page * params.limit);
     }
-    dbQuery.sort('name');
+    dbQuery.sort({dateAdded: -1});
     dbQuery.populate({path: 'author', select: 'email', model: 'User'});
     dbQuery.exec(function (err, docs) {
       if (err) {
@@ -828,6 +860,19 @@ function LocationDeviceObject () {
       checkInId: cid,
       locationId: locationId
     })
+    .then(function (docs) {
+      q.resolve(docs);
+    }, function (err) {
+      q.reject(err);
+    });
+
+    return q.promise;
+  };
+
+  LocationDeviceObject.prototype.getFeedback = function getFeedback () {
+    var q = Q.defer();
+
+    deviceFn.queryFeedback({})
     .then(function (docs) {
       q.resolve(docs);
     }, function (err) {
