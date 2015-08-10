@@ -14,6 +14,7 @@ var UserModel = require('./user/user.js').UserModel,
     crypt = require('../lib/commons.js'),
     errors = require('../lib/errors'),
     Utils = require('../lib/utility'),
+    validate = require('validator'),
     configuration = require('config'); // we generally want to load the whole config
 
 
@@ -120,10 +121,7 @@ var userFunctions = {
         //         _id: data.userId
         //     }]
         // }).exec(function(err, i) {
-        UserModel.findOne({
-                email: data.email
-        }).exec(function(err, i) {
-
+        UserModel.findOne(data).exec(function(err, i) {
 
             if (err) {
                 return d.reject(err);
@@ -178,7 +176,6 @@ var userFunctions = {
 
     validatePassword: function validatePassword(plain, hashed) {
         // console.log('on validation');
-        console.log(plain, hashed);
         var d = Q.defer();
 
         crypt.validate(plain, hashed)
@@ -919,15 +916,29 @@ User.prototype.checkAuthCredentials = function(usernameOrEmail, password, req) {
     console.log('Checking Auth credentials');
     var d = Q.defer();
 
-    var userInfo = {
-        phoneNumber: usernameOrEmail,
-        email: usernameOrEmail,
-        username: usernameOrEmail,
-        plain_password: password,
-        ipAddress: req.connection.remoteAddress
-    };
+    var userInfo = {};
+
+    if (validate.isEmail(usernameOrEmail)) {
+        userInfo.email = usernameOrEmail;
+    }
+    if (validate.isMongoId(usernameOrEmail)) {
+        userInfo._id = usernameOrEmail;
+    }
+    if (validate.isMobilePhone(usernameOrEmail, 'en-GB')){
+        userInfo.phoneNumber = usernameOrEmail;
+    }
+        //     $or: [{
+        //         phoneNumber: data.phoneNumber
+        //     },
+        //     {
+        //         email: data.email
+        //     }, {
+        //         username: data.username
+        //     }, {
+        //         _id: data.userId
+        //     }]
     userFunctions.findUser(userInfo).then(function(user) {
-        userFunctions.validatePassword(userInfo.plain_password, user.password)
+        userFunctions.validatePassword(password, user.password)
         .then(function(r) {
             console.log('After password validation');
             // console.log(r);
