@@ -1,0 +1,394 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'validator',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.36
+4 verbose node symlink /usr/bin/node
+5 warn package.json supertest@0.7.1 No repository field.
+6 verbose readDependencies using package.json deps
+7 verbose cache add [ 'validator', null ]
+8 verbose cache add name=undefined spec="validator" args=["validator",null]
+9 verbose parsed url { protocol: null,
+9 verbose parsed url   slashes: null,
+9 verbose parsed url   auth: null,
+9 verbose parsed url   host: null,
+9 verbose parsed url   port: null,
+9 verbose parsed url   hostname: null,
+9 verbose parsed url   hash: null,
+9 verbose parsed url   search: null,
+9 verbose parsed url   query: null,
+9 verbose parsed url   pathname: 'validator',
+9 verbose parsed url   path: 'validator',
+9 verbose parsed url   href: 'validator' }
+10 silly lockFile 03a182f7-validator validator
+11 verbose lock validator /home/kingkoded/.npm/03a182f7-validator.lock
+12 silly lockFile 03a182f7-validator validator
+13 silly lockFile 03a182f7-validator validator
+14 verbose addNamed [ 'validator', '' ]
+15 verbose addNamed [ null, '*' ]
+16 silly lockFile 82ae3f96-validator validator@
+17 verbose lock validator@ /home/kingkoded/.npm/82ae3f96-validator.lock
+18 silly addNameRange { name: 'validator', range: '*', hasData: false }
+19 verbose request where is /validator
+20 verbose request registry https://registry.npmjs.org/
+21 verbose request id 66acde980c583265
+22 verbose url raw /validator
+23 verbose url resolving [ 'https://registry.npmjs.org/', './validator' ]
+24 verbose url resolved https://registry.npmjs.org/validator
+25 verbose request where is https://registry.npmjs.org/validator
+26 info trying registry request attempt 1 at 09:20:35
+27 verbose etag "EZAZLZYRV3V0PXWLYIN7Q7KR0"
+28 http GET https://registry.npmjs.org/validator
+29 http 304 https://registry.npmjs.org/validator
+30 silly registry.get cb [ 304,
+30 silly registry.get   { date: 'Mon, 10 Aug 2015 08:20:36 GMT',
+30 silly registry.get     via: '1.1 varnish',
+30 silly registry.get     'cache-control': 'max-age=60',
+30 silly registry.get     etag: '"EZAZLZYRV3V0PXWLYIN7Q7KR0"',
+30 silly registry.get     age: '0',
+30 silly registry.get     connection: 'keep-alive',
+30 silly registry.get     'x-served-by': 'cache-lhr6330-LHR',
+30 silly registry.get     'x-cache': 'HIT',
+30 silly registry.get     'x-cache-hits': '1',
+30 silly registry.get     'x-timer': 'S1439194836.927148,VS0,VE159',
+30 silly registry.get     vary: 'Accept' } ]
+31 verbose etag https://registry.npmjs.org/validator from cache
+32 silly addNameRange number 2 { name: 'validator', range: '*', hasData: true }
+33 silly addNameRange versions [ 'validator',
+33 silly addNameRange   [ '0.1.0',
+33 silly addNameRange     '0.1.1',
+33 silly addNameRange     '0.1.2',
+33 silly addNameRange     '0.1.3',
+33 silly addNameRange     '0.1.4',
+33 silly addNameRange     '0.1.5',
+33 silly addNameRange     '0.1.6',
+33 silly addNameRange     '0.1.7',
+33 silly addNameRange     '0.1.8',
+33 silly addNameRange     '0.1.9',
+33 silly addNameRange     '0.2.0',
+33 silly addNameRange     '0.2.1',
+33 silly addNameRange     '0.2.2',
+33 silly addNameRange     '0.2.3',
+33 silly addNameRange     '0.2.4',
+33 silly addNameRange     '0.2.5',
+33 silly addNameRange     '0.2.6',
+33 silly addNameRange     '0.2.7',
+33 silly addNameRange     '0.2.8',
+33 silly addNameRange     '0.2.9',
+33 silly addNameRange     '0.3.0',
+33 silly addNameRange     '0.3.1',
+33 silly addNameRange     '0.3.2',
+33 silly addNameRange     '0.3.4',
+33 silly addNameRange     '0.3.5',
+33 silly addNameRange     '0.3.6',
+33 silly addNameRange     '0.3.7',
+33 silly addNameRange     '0.3.8',
+33 silly addNameRange     '0.3.9',
+33 silly addNameRange     '0.4.0',
+33 silly addNameRange     '0.4.1',
+33 silly addNameRange     '0.4.2',
+33 silly addNameRange     '0.4.3',
+33 silly addNameRange     '0.4.4',
+33 silly addNameRange     '0.4.5',
+33 silly addNameRange     '0.4.6',
+33 silly addNameRange     '0.4.6-1',
+33 silly addNameRange     '0.4.6-2',
+33 silly addNameRange     '0.4.6-3',
+33 silly addNameRange     '0.4.7',
+33 silly addNameRange     '0.4.8',
+33 silly addNameRange     '0.4.9',
+33 silly addNameRange     '0.4.10',
+33 silly addNameRange     '0.4.11',
+33 silly addNameRange     '0.4.12',
+33 silly addNameRange     '0.4.13',
+33 silly addNameRange     '0.4.15',
+33 silly addNameRange     '0.4.16',
+33 silly addNameRange     '0.4.17',
+33 silly addNameRange     '0.4.18',
+33 silly addNameRange     '0.4.19',
+33 silly addNameRange     '0.4.20',
+33 silly addNameRange     '0.4.21',
+33 silly addNameRange     '0.4.22',
+33 silly addNameRange     '0.4.23',
+33 silly addNameRange     '0.4.24',
+33 silly addNameRange     '0.4.25',
+33 silly addNameRange     '0.4.27',
+33 silly addNameRange     '0.4.28',
+33 silly addNameRange     '0.5.0',
+33 silly addNameRange     '1.0.0',
+33 silly addNameRange     '1.1.0',
+33 silly addNameRange     '1.1.1',
+33 silly addNameRange     '1.1.2',
+33 silly addNameRange     '1.1.3',
+33 silly addNameRange     '1.2.0',
+33 silly addNameRange     '1.2.1',
+33 silly addNameRange     '1.2.2',
+33 silly addNameRange     '1.3.0',
+33 silly addNameRange     '1.4.0',
+33 silly addNameRange     '1.5.0',
+33 silly addNameRange     '1.5.1',
+33 silly addNameRange     '2.0.0',
+33 silly addNameRange     '2.1.0',
+33 silly addNameRange     '3.0.0',
+33 silly addNameRange     '3.1.0',
+33 silly addNameRange     '3.2.0',
+33 silly addNameRange     '3.2.1',
+33 silly addNameRange     '3.3.0',
+33 silly addNameRange     '3.4.0',
+33 silly addNameRange     '3.5.0',
+33 silly addNameRange     '3.5.1',
+33 silly addNameRange     '3.6.0',
+33 silly addNameRange     '3.7.0',
+33 silly addNameRange     '3.8.0',
+33 silly addNameRange     '3.9.0',
+33 silly addNameRange     '3.10.0',
+33 silly addNameRange     '3.11.0',
+33 silly addNameRange     '3.11.1',
+33 silly addNameRange     '3.11.2',
+33 silly addNameRange     '3.12.0',
+33 silly addNameRange     '3.13.0',
+33 silly addNameRange     '3.14.0',
+33 silly addNameRange     '3.14.1',
+33 silly addNameRange     '3.15.0',
+33 silly addNameRange     '3.16.0',
+33 silly addNameRange     '3.16.1',
+33 silly addNameRange     '3.17.0',
+33 silly addNameRange     '3.17.1',
+33 silly addNameRange     '3.17.2',
+33 silly addNameRange     '3.18.0',
+33 silly addNameRange     '3.18.1',
+33 silly addNameRange     '3.19.0',
+33 silly addNameRange     '3.19.1',
+33 silly addNameRange     '3.20.0',
+33 silly addNameRange     '3.21.0',
+33 silly addNameRange     '3.22.0',
+33 silly addNameRange     '3.22.1',
+33 silly addNameRange     '3.22.2',
+33 silly addNameRange     '3.23.0',
+33 silly addNameRange     '3.24.0',
+33 silly addNameRange     '3.25.0',
+33 silly addNameRange     '3.26.0',
+33 silly addNameRange     '3.27.0',
+33 silly addNameRange     '3.28.0',
+33 silly addNameRange     '3.29.0',
+33 silly addNameRange     '3.30.0',
+33 silly addNameRange     '3.32.0',
+33 silly addNameRange     '3.33.0',
+33 silly addNameRange     '3.34.0',
+33 silly addNameRange     '3.35.0',
+33 silly addNameRange     '3.36.0',
+33 silly addNameRange     '3.37.0',
+33 silly addNameRange     '3.38.0',
+33 silly addNameRange     '3.39.0',
+33 silly addNameRange     '3.40.0',
+33 silly addNameRange     '3.40.1',
+33 silly addNameRange     '3.41.0',
+33 silly addNameRange     '3.41.1',
+33 silly addNameRange     '3.41.2',
+33 silly addNameRange     '3.41.3',
+33 silly addNameRange     '3.42.0',
+33 silly addNameRange     '3.43.0',
+33 silly addNameRange     '4.0.0',
+33 silly addNameRange     '4.0.1',
+33 silly addNameRange     '4.0.2' ] ]
+34 verbose addNamed [ 'validator', '4.0.2' ]
+35 verbose addNamed [ '4.0.2', '4.0.2' ]
+36 silly lockFile 4e20417a-validator-4-0-2 validator@4.0.2
+37 verbose lock validator@4.0.2 /home/kingkoded/.npm/4e20417a-validator-4-0-2.lock
+38 silly lockFile 4e20417a-validator-4-0-2 validator@4.0.2
+39 silly lockFile 4e20417a-validator-4-0-2 validator@4.0.2
+40 silly lockFile 82ae3f96-validator validator@
+41 silly lockFile 82ae3f96-validator validator@
+42 silly resolved [ { name: 'validator',
+42 silly resolved     description: 'String validation and sanitization',
+42 silly resolved     version: '4.0.2',
+42 silly resolved     homepage: 'http://github.com/chriso/validator.js',
+42 silly resolved     keywords:
+42 silly resolved      [ 'validator',
+42 silly resolved        'validation',
+42 silly resolved        'validate',
+42 silly resolved        'sanitization',
+42 silly resolved        'sanitize',
+42 silly resolved        'sanitisation',
+42 silly resolved        'sanitise',
+42 silly resolved        'assert' ],
+42 silly resolved     author: { name: 'Chris O\'Hara', email: 'cohara87@gmail.com' },
+42 silly resolved     main: 'validator.js',
+42 silly resolved     bugs: { url: 'http://github.com/chriso/validator.js/issues' },
+42 silly resolved     repository:
+42 silly resolved      { type: 'git',
+42 silly resolved        url: 'git+ssh://git@github.com/chriso/validator.js.git' },
+42 silly resolved     devDependencies:
+42 silly resolved      { mocha: 'latest',
+42 silly resolved        istanbul: 'latest',
+42 silly resolved        jshint: 'latest',
+42 silly resolved        'uglify-js': 'latest',
+42 silly resolved        coveralls: 'latest',
+42 silly resolved        contextify: 'latest' },
+42 silly resolved     scripts:
+42 silly resolved      { test: 'node ./node_modules/.bin/_mocha --reporter spec',
+42 silly resolved        coveralls: 'istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage' },
+42 silly resolved     engines: { node: '>= 0.10' },
+42 silly resolved     license: 'MIT',
+42 silly resolved     gitHead: '57daf3948ecea1a6b2d9640628503ce50494f629',
+42 silly resolved     _id: 'validator@4.0.2',
+42 silly resolved     _shasum: '70a1c2525ec4744e409971c1b298aa69a7534251',
+42 silly resolved     _from: 'validator@',
+42 silly resolved     _npmVersion: '2.12.1',
+42 silly resolved     _nodeVersion: '0.12.7',
+42 silly resolved     _npmUser: { name: 'cohara87', email: 'cohara87@gmail.com' },
+42 silly resolved     dist:
+42 silly resolved      { shasum: '70a1c2525ec4744e409971c1b298aa69a7534251',
+42 silly resolved        tarball: 'http://registry.npmjs.org/validator/-/validator-4.0.2.tgz' },
+42 silly resolved     maintainers: [ [Object] ],
+42 silly resolved     directories: {},
+42 silly resolved     _resolved: 'https://registry.npmjs.org/validator/-/validator-4.0.2.tgz',
+42 silly resolved     readme: 'ERROR: No README data found!' } ]
+43 info install validator@4.0.2 into /home/kingkoded/Projects/eigenvalue/tagchief-node
+44 info installOne validator@4.0.2
+45 verbose node_modules/validator unbuild
+46 verbose tar unpack /home/kingkoded/.npm/validator/4.0.2/package.tgz
+47 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+48 verbose lock tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator /home/kingkoded/.npm/f9ebd805-hief-node-node-modules-validator.lock
+49 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
+50 verbose lock tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz /home/kingkoded/.npm/a0e79967--npm-validator-4-0-2-package-tgz.lock
+51 silly gunzTarPerm modes [ '775', '664' ]
+52 silly gunzTarPerm extractEntry package.json
+53 silly gunzTarPerm modified mode [ 'package.json', 420, 436 ]
+54 silly gunzTarPerm extractEntry .npmignore
+55 silly gunzTarPerm modified mode [ '.npmignore', 420, 436 ]
+56 silly gunzTarPerm extractEntry README.md
+57 silly gunzTarPerm modified mode [ 'README.md', 420, 436 ]
+58 silly gunzTarPerm extractEntry LICENSE
+59 silly gunzTarPerm modified mode [ 'LICENSE', 420, 436 ]
+60 silly gunzTarPerm extractEntry validator.js
+61 silly gunzTarPerm modified mode [ 'validator.js', 420, 436 ]
+62 silly gunzTarPerm extractEntry validator.min.js
+63 silly gunzTarPerm modified mode [ 'validator.min.js', 420, 436 ]
+64 silly gunzTarPerm extractEntry Makefile
+65 silly gunzTarPerm modified mode [ 'Makefile', 420, 436 ]
+66 silly gunzTarPerm extractEntry bower.json
+67 silly gunzTarPerm modified mode [ 'bower.json', 420, 436 ]
+68 silly gunzTarPerm extractEntry .travis.yml
+69 silly gunzTarPerm modified mode [ '.travis.yml', 420, 436 ]
+70 silly gunzTarPerm extractEntry test/client-side.js
+71 silly gunzTarPerm modified mode [ 'test/client-side.js', 420, 436 ]
+72 silly gunzTarPerm extractEntry test/exports.js
+73 silly gunzTarPerm modified mode [ 'test/exports.js', 420, 436 ]
+74 silly gunzTarPerm extractEntry test/sanitizers.js
+75 silly gunzTarPerm modified mode [ 'test/sanitizers.js', 420, 436 ]
+76 silly gunzTarPerm extractEntry test/validators.js
+77 silly gunzTarPerm modified mode [ 'test/validators.js', 420, 436 ]
+78 silly gunzTarPerm extractEntry .jshintrc
+79 silly gunzTarPerm modified mode [ '.jshintrc', 420, 436 ]
+80 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+81 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+82 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
+83 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
+84 info preinstall validator@4.0.2
+85 verbose readDependencies using package.json deps
+86 verbose readDependencies using package.json deps
+87 silly resolved []
+88 verbose about to build /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+89 info build /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+90 verbose linkStuff [ false,
+90 verbose linkStuff   false,
+90 verbose linkStuff   false,
+90 verbose linkStuff   '/home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules' ]
+91 info linkStuff validator@4.0.2
+92 verbose linkBins validator@4.0.2
+93 verbose linkMans validator@4.0.2
+94 verbose rebuildBundles validator@4.0.2
+95 info install validator@4.0.2
+96 info postinstall validator@4.0.2
+97 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task requires colors@'~0.6.0-1' but will load
+97 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+97 warn unmet dependency which is version 1.1.2
+98 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/oauth2orize requires debug@'0.7.x' but will load
+98 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/debug,
+98 warn unmet dependency which is version 2.2.0
+99 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mongoose-paginate requires mongoose@'3.5.1' but will load
+99 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mongoose,
+99 warn unmet dependency which is version 4.0.5
+100 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-concurrent requires async@'^0.9.0' but will load
+100 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
+100 warn unmet dependency which is version 1.2.1
+101 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-aws requires mime@'~1.2.11' but will load
+101 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+101 warn unmet dependency which is version 1.3.4
+102 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-s3 requires mime@'~1.2.5' but will load
+102 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+102 warn unmet dependency which is version 1.3.4
+103 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-contrib-watch requires lodash@'~2.4.1' but will load
+103 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/lodash,
+103 warn unmet dependency which is version 3.9.3
+104 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower requires q@'~1.0.1' but will load
+104 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/q,
+104 warn unmet dependency which is version 1.4.1
+105 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/decompress-zip requires q@'~1.0.0' but will load
+105 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/q,
+105 warn unmet dependency which is version 1.4.1
+106 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/request requires mime@'~1.2.9' but will load
+106 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+106 warn unmet dependency which is version 1.3.4
+107 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/bower-registry-client/node_modules/request requires mime@'~1.2.9' but will load
+107 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+107 warn unmet dependency which is version 1.3.4
+108 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/bower-registry-client/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+108 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+108 warn unmet dependency which is version 1.3.4
+109 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/insight/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+109 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+109 warn unmet dependency which is version 1.3.4
+110 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+110 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+110 warn unmet dependency which is version 1.3.4
+111 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/node-gcm/node_modules/request/node_modules/form-data requires async@'~0.9.0' but will load
+111 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
+111 warn unmet dependency which is version 1.2.1
+112 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-connect/node_modules/connect/node_modules/send requires mime@'~1.2.9' but will load
+112 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+112 warn unmet dependency which is version 1.3.4
+113 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-s3/node_modules/knox requires debug@'~0.7.0' but will load
+113 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/debug,
+113 warn unmet dependency which is version 2.2.0
+114 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/accepts requires mime@'~1.2.11' but will load
+114 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+114 warn unmet dependency which is version 1.3.4
+115 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/type-is requires mime@'~1.2.11' but will load
+115 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+115 warn unmet dependency which is version 1.3.4
+116 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/send requires mime@'~1.2.9' but will load
+116 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+116 warn unmet dependency which is version 1.3.4
+117 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/serve-static/node_modules/send requires mime@'~1.2.9' but will load
+117 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+117 warn unmet dependency which is version 1.3.4
+118 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-nodemon/node_modules/nodemon/node_modules/update-notifier/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+118 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+118 warn unmet dependency which is version 1.3.4
+119 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-nodemon/node_modules/nodemon/node_modules/update-notifier/node_modules/request/node_modules/form-data requires async@'~0.9.0' but will load
+119 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
+119 warn unmet dependency which is version 1.2.1
+120 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt requires colors@'~0.6.0' but will load
+120 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+120 warn unmet dependency which is version 1.1.2
+121 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt/node_modules/prompt requires colors@'0.x.x' but will load
+121 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+121 warn unmet dependency which is version 1.1.2
+122 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt/node_modules/prompt/node_modules/winston requires colors@'0.x.x' but will load
+122 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+122 warn unmet dependency which is version 1.1.2
+123 error peerinvalid The package mongoose does not satisfy its siblings' peerDependencies requirements!
+123 error peerinvalid Peer mongoose-auto-increment@4.0.0 wants mongoose@~4.0.0
+123 error peerinvalid Peer mongoosastic@0.4.1 wants mongoose@3.8.x
+124 error System Linux 3.16.0-30-generic
+125 error command "/usr/bin/node" "/usr/bin/npm" "install" "validator" "--save"
+126 error cwd /home/kingkoded/Projects/eigenvalue/tagchief-node
+127 error node -v v0.10.36
+128 error npm -v 1.4.28
+129 error code EPEERINVALID
+130 verbose exit [ 1, true ]
