@@ -176,7 +176,7 @@ var userFunctions = {
 
     validatePassword: function validatePassword(plain, hashed) {
         // console.log('on validation');
-        // console.log(plain, hashed);
+        console.log(plain, hashed);
         var d = Q.defer();
 
         crypt.validate(plain, hashed)
