@@ -926,9 +926,7 @@ User.prototype.checkAuthCredentials = function(usernameOrEmail, password, req) {
         plain_password: password,
         ipAddress: req.connection.remoteAddress
     };
-    console.log(userInfo);
     userFunctions.findUser(userInfo).then(function(user) {
-        console.log(user);
         userFunctions.validatePassword(userInfo.plain_password, user.password)
         .then(function(r) {
             console.log('After password validation');
