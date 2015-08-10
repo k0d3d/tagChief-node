@@ -34,26 +34,26 @@
 18 silly addNameRange { name: 'validator', range: '*', hasData: false }
 19 verbose request where is /validator
 20 verbose request registry https://registry.npmjs.org/
-21 verbose request id 66acde980c583265
+21 verbose request id 6f0b068fb484aa22
 22 verbose url raw /validator
 23 verbose url resolving [ 'https://registry.npmjs.org/', './validator' ]
 24 verbose url resolved https://registry.npmjs.org/validator
 25 verbose request where is https://registry.npmjs.org/validator
-26 info trying registry request attempt 1 at 09:20:35
+26 info trying registry request attempt 1 at 09:42:56
 27 verbose etag "EZAZLZYRV3V0PXWLYIN7Q7KR0"
 28 http GET https://registry.npmjs.org/validator
 29 http 304 https://registry.npmjs.org/validator
 30 silly registry.get cb [ 304,
-30 silly registry.get   { date: 'Mon, 10 Aug 2015 08:20:36 GMT',
+30 silly registry.get   { date: 'Mon, 10 Aug 2015 08:42:57 GMT',
 30 silly registry.get     via: '1.1 varnish',
 30 silly registry.get     'cache-control': 'max-age=60',
 30 silly registry.get     etag: '"EZAZLZYRV3V0PXWLYIN7Q7KR0"',
 30 silly registry.get     age: '0',
 30 silly registry.get     connection: 'keep-alive',
-30 silly registry.get     'x-served-by': 'cache-lhr6330-LHR',
+30 silly registry.get     'x-served-by': 'cache-lhr6328-LHR',
 30 silly registry.get     'x-cache': 'HIT',
 30 silly registry.get     'x-cache-hits': '1',
-30 silly registry.get     'x-timer': 'S1439194836.927148,VS0,VE159',
+30 silly registry.get     'x-timer': 'S1439196177.437658,VS0,VE360',
 30 silly registry.get     vary: 'Accept' } ]
 31 verbose etag https://registry.npmjs.org/validator from cache
 32 silly addNameRange number 2 { name: 'validator', range: '*', hasData: true }
@@ -250,145 +250,149 @@
 43 info install validator@4.0.2 into /home/kingkoded/Projects/eigenvalue/tagchief-node
 44 info installOne validator@4.0.2
 45 verbose node_modules/validator unbuild
-46 verbose tar unpack /home/kingkoded/.npm/validator/4.0.2/package.tgz
-47 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
-48 verbose lock tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator /home/kingkoded/.npm/f9ebd805-hief-node-node-modules-validator.lock
-49 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
-50 verbose lock tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz /home/kingkoded/.npm/a0e79967--npm-validator-4-0-2-package-tgz.lock
-51 silly gunzTarPerm modes [ '775', '664' ]
-52 silly gunzTarPerm extractEntry package.json
-53 silly gunzTarPerm modified mode [ 'package.json', 420, 436 ]
-54 silly gunzTarPerm extractEntry .npmignore
-55 silly gunzTarPerm modified mode [ '.npmignore', 420, 436 ]
-56 silly gunzTarPerm extractEntry README.md
-57 silly gunzTarPerm modified mode [ 'README.md', 420, 436 ]
-58 silly gunzTarPerm extractEntry LICENSE
-59 silly gunzTarPerm modified mode [ 'LICENSE', 420, 436 ]
-60 silly gunzTarPerm extractEntry validator.js
-61 silly gunzTarPerm modified mode [ 'validator.js', 420, 436 ]
-62 silly gunzTarPerm extractEntry validator.min.js
-63 silly gunzTarPerm modified mode [ 'validator.min.js', 420, 436 ]
-64 silly gunzTarPerm extractEntry Makefile
-65 silly gunzTarPerm modified mode [ 'Makefile', 420, 436 ]
-66 silly gunzTarPerm extractEntry bower.json
-67 silly gunzTarPerm modified mode [ 'bower.json', 420, 436 ]
-68 silly gunzTarPerm extractEntry .travis.yml
-69 silly gunzTarPerm modified mode [ '.travis.yml', 420, 436 ]
-70 silly gunzTarPerm extractEntry test/client-side.js
-71 silly gunzTarPerm modified mode [ 'test/client-side.js', 420, 436 ]
-72 silly gunzTarPerm extractEntry test/exports.js
-73 silly gunzTarPerm modified mode [ 'test/exports.js', 420, 436 ]
-74 silly gunzTarPerm extractEntry test/sanitizers.js
-75 silly gunzTarPerm modified mode [ 'test/sanitizers.js', 420, 436 ]
-76 silly gunzTarPerm extractEntry test/validators.js
-77 silly gunzTarPerm modified mode [ 'test/validators.js', 420, 436 ]
-78 silly gunzTarPerm extractEntry .jshintrc
-79 silly gunzTarPerm modified mode [ '.jshintrc', 420, 436 ]
-80 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
-81 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
-82 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
-83 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
-84 info preinstall validator@4.0.2
-85 verbose readDependencies using package.json deps
-86 verbose readDependencies using package.json deps
-87 silly resolved []
-88 verbose about to build /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
-89 info build /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
-90 verbose linkStuff [ false,
-90 verbose linkStuff   false,
-90 verbose linkStuff   false,
-90 verbose linkStuff   '/home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules' ]
-91 info linkStuff validator@4.0.2
-92 verbose linkBins validator@4.0.2
-93 verbose linkMans validator@4.0.2
-94 verbose rebuildBundles validator@4.0.2
-95 info install validator@4.0.2
-96 info postinstall validator@4.0.2
-97 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task requires colors@'~0.6.0-1' but will load
-97 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
-97 warn unmet dependency which is version 1.1.2
-98 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/oauth2orize requires debug@'0.7.x' but will load
-98 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/debug,
-98 warn unmet dependency which is version 2.2.0
-99 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mongoose-paginate requires mongoose@'3.5.1' but will load
-99 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mongoose,
-99 warn unmet dependency which is version 4.0.5
-100 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-concurrent requires async@'^0.9.0' but will load
-100 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
-100 warn unmet dependency which is version 1.2.1
-101 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-aws requires mime@'~1.2.11' but will load
-101 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-101 warn unmet dependency which is version 1.3.4
-102 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-s3 requires mime@'~1.2.5' but will load
-102 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-102 warn unmet dependency which is version 1.3.4
-103 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-contrib-watch requires lodash@'~2.4.1' but will load
-103 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/lodash,
-103 warn unmet dependency which is version 3.9.3
-104 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower requires q@'~1.0.1' but will load
-104 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/q,
-104 warn unmet dependency which is version 1.4.1
-105 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/decompress-zip requires q@'~1.0.0' but will load
-105 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/q,
-105 warn unmet dependency which is version 1.4.1
-106 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/request requires mime@'~1.2.9' but will load
+46 info preuninstall validator@4.0.2
+47 info uninstall validator@4.0.2
+48 verbose true,/home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules,/home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules unbuild validator@4.0.2
+49 info postuninstall validator@4.0.2
+50 verbose tar unpack /home/kingkoded/.npm/validator/4.0.2/package.tgz
+51 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+52 verbose lock tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator /home/kingkoded/.npm/f9ebd805-hief-node-node-modules-validator.lock
+53 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
+54 verbose lock tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz /home/kingkoded/.npm/a0e79967--npm-validator-4-0-2-package-tgz.lock
+55 silly gunzTarPerm modes [ '775', '664' ]
+56 silly gunzTarPerm extractEntry package.json
+57 silly gunzTarPerm modified mode [ 'package.json', 420, 436 ]
+58 silly gunzTarPerm extractEntry .npmignore
+59 silly gunzTarPerm modified mode [ '.npmignore', 420, 436 ]
+60 silly gunzTarPerm extractEntry README.md
+61 silly gunzTarPerm modified mode [ 'README.md', 420, 436 ]
+62 silly gunzTarPerm extractEntry LICENSE
+63 silly gunzTarPerm modified mode [ 'LICENSE', 420, 436 ]
+64 silly gunzTarPerm extractEntry validator.js
+65 silly gunzTarPerm modified mode [ 'validator.js', 420, 436 ]
+66 silly gunzTarPerm extractEntry validator.min.js
+67 silly gunzTarPerm modified mode [ 'validator.min.js', 420, 436 ]
+68 silly gunzTarPerm extractEntry Makefile
+69 silly gunzTarPerm modified mode [ 'Makefile', 420, 436 ]
+70 silly gunzTarPerm extractEntry bower.json
+71 silly gunzTarPerm modified mode [ 'bower.json', 420, 436 ]
+72 silly gunzTarPerm extractEntry .travis.yml
+73 silly gunzTarPerm modified mode [ '.travis.yml', 420, 436 ]
+74 silly gunzTarPerm extractEntry test/client-side.js
+75 silly gunzTarPerm modified mode [ 'test/client-side.js', 420, 436 ]
+76 silly gunzTarPerm extractEntry test/exports.js
+77 silly gunzTarPerm modified mode [ 'test/exports.js', 420, 436 ]
+78 silly gunzTarPerm extractEntry test/sanitizers.js
+79 silly gunzTarPerm modified mode [ 'test/sanitizers.js', 420, 436 ]
+80 silly gunzTarPerm extractEntry test/validators.js
+81 silly gunzTarPerm modified mode [ 'test/validators.js', 420, 436 ]
+82 silly gunzTarPerm extractEntry .jshintrc
+83 silly gunzTarPerm modified mode [ '.jshintrc', 420, 436 ]
+84 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+85 silly lockFile f9ebd805-hief-node-node-modules-validator tar:///home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+86 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
+87 silly lockFile a0e79967--npm-validator-4-0-2-package-tgz tar:///home/kingkoded/.npm/validator/4.0.2/package.tgz
+88 info preinstall validator@4.0.2
+89 verbose readDependencies using package.json deps
+90 verbose readDependencies using package.json deps
+91 silly resolved []
+92 verbose about to build /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+93 info build /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/validator
+94 verbose linkStuff [ false,
+94 verbose linkStuff   false,
+94 verbose linkStuff   false,
+94 verbose linkStuff   '/home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules' ]
+95 info linkStuff validator@4.0.2
+96 verbose linkBins validator@4.0.2
+97 verbose linkMans validator@4.0.2
+98 verbose rebuildBundles validator@4.0.2
+99 info install validator@4.0.2
+100 info postinstall validator@4.0.2
+101 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task requires colors@'~0.6.0-1' but will load
+101 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+101 warn unmet dependency which is version 1.1.2
+102 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/oauth2orize requires debug@'0.7.x' but will load
+102 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/debug,
+102 warn unmet dependency which is version 2.2.0
+103 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mongoose-paginate requires mongoose@'3.5.1' but will load
+103 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mongoose,
+103 warn unmet dependency which is version 4.0.5
+104 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-concurrent requires async@'^0.9.0' but will load
+104 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
+104 warn unmet dependency which is version 1.2.1
+105 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-aws requires mime@'~1.2.11' but will load
+105 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+105 warn unmet dependency which is version 1.3.4
+106 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-s3 requires mime@'~1.2.5' but will load
 106 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
 106 warn unmet dependency which is version 1.3.4
-107 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/bower-registry-client/node_modules/request requires mime@'~1.2.9' but will load
-107 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-107 warn unmet dependency which is version 1.3.4
-108 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/bower-registry-client/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
-108 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-108 warn unmet dependency which is version 1.3.4
-109 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/insight/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
-109 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-109 warn unmet dependency which is version 1.3.4
-110 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+107 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-contrib-watch requires lodash@'~2.4.1' but will load
+107 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/lodash,
+107 warn unmet dependency which is version 3.9.3
+108 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower requires q@'~1.0.1' but will load
+108 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/q,
+108 warn unmet dependency which is version 1.4.1
+109 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/decompress-zip requires q@'~1.0.0' but will load
+109 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/q,
+109 warn unmet dependency which is version 1.4.1
+110 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/request requires mime@'~1.2.9' but will load
 110 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
 110 warn unmet dependency which is version 1.3.4
-111 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/node-gcm/node_modules/request/node_modules/form-data requires async@'~0.9.0' but will load
-111 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
-111 warn unmet dependency which is version 1.2.1
-112 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-connect/node_modules/connect/node_modules/send requires mime@'~1.2.9' but will load
+111 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/bower-registry-client/node_modules/request requires mime@'~1.2.9' but will load
+111 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+111 warn unmet dependency which is version 1.3.4
+112 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/bower-registry-client/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
 112 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
 112 warn unmet dependency which is version 1.3.4
-113 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-s3/node_modules/knox requires debug@'~0.7.0' but will load
-113 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/debug,
-113 warn unmet dependency which is version 2.2.0
-114 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/accepts requires mime@'~1.2.11' but will load
+113 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/insight/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+113 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+113 warn unmet dependency which is version 1.3.4
+114 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-bower-task/node_modules/bower/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
 114 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
 114 warn unmet dependency which is version 1.3.4
-115 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/type-is requires mime@'~1.2.11' but will load
-115 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-115 warn unmet dependency which is version 1.3.4
-116 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/send requires mime@'~1.2.9' but will load
+115 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/node-gcm/node_modules/request/node_modules/form-data requires async@'~0.9.0' but will load
+115 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
+115 warn unmet dependency which is version 1.2.1
+116 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-connect/node_modules/connect/node_modules/send requires mime@'~1.2.9' but will load
 116 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
 116 warn unmet dependency which is version 1.3.4
-117 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/serve-static/node_modules/send requires mime@'~1.2.9' but will load
-117 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
-117 warn unmet dependency which is version 1.3.4
-118 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-nodemon/node_modules/nodemon/node_modules/update-notifier/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+117 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-s3/node_modules/knox requires debug@'~0.7.0' but will load
+117 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/debug,
+117 warn unmet dependency which is version 2.2.0
+118 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/accepts requires mime@'~1.2.11' but will load
 118 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
 118 warn unmet dependency which is version 1.3.4
-119 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-nodemon/node_modules/nodemon/node_modules/update-notifier/node_modules/request/node_modules/form-data requires async@'~0.9.0' but will load
-119 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
-119 warn unmet dependency which is version 1.2.1
-120 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt requires colors@'~0.6.0' but will load
-120 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
-120 warn unmet dependency which is version 1.1.2
-121 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt/node_modules/prompt requires colors@'0.x.x' but will load
-121 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
-121 warn unmet dependency which is version 1.1.2
-122 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt/node_modules/prompt/node_modules/winston requires colors@'0.x.x' but will load
-122 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
-122 warn unmet dependency which is version 1.1.2
-123 error peerinvalid The package mongoose does not satisfy its siblings' peerDependencies requirements!
-123 error peerinvalid Peer mongoose-auto-increment@4.0.0 wants mongoose@~4.0.0
-123 error peerinvalid Peer mongoosastic@0.4.1 wants mongoose@3.8.x
-124 error System Linux 3.16.0-30-generic
-125 error command "/usr/bin/node" "/usr/bin/npm" "install" "validator" "--save"
-126 error cwd /home/kingkoded/Projects/eigenvalue/tagchief-node
-127 error node -v v0.10.36
-128 error npm -v 1.4.28
-129 error code EPEERINVALID
-130 verbose exit [ 1, true ]
+119 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/type-is requires mime@'~1.2.11' but will load
+119 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+119 warn unmet dependency which is version 1.3.4
+120 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/send requires mime@'~1.2.9' but will load
+120 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+120 warn unmet dependency which is version 1.3.4
+121 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-node-inspector/node_modules/node-inspector/node_modules/express/node_modules/serve-static/node_modules/send requires mime@'~1.2.9' but will load
+121 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+121 warn unmet dependency which is version 1.3.4
+122 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-nodemon/node_modules/nodemon/node_modules/update-notifier/node_modules/request/node_modules/form-data requires mime@'~1.2.11' but will load
+122 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/mime,
+122 warn unmet dependency which is version 1.3.4
+123 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-nodemon/node_modules/nodemon/node_modules/update-notifier/node_modules/request/node_modules/form-data requires async@'~0.9.0' but will load
+123 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/async,
+123 warn unmet dependency which is version 1.2.1
+124 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt requires colors@'~0.6.0' but will load
+124 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+124 warn unmet dependency which is version 1.1.2
+125 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt/node_modules/prompt requires colors@'0.x.x' but will load
+125 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+125 warn unmet dependency which is version 1.1.2
+126 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/grunt-clean/node_modules/grunt/node_modules/prompt/node_modules/winston requires colors@'0.x.x' but will load
+126 warn unmet dependency /home/kingkoded/Projects/eigenvalue/tagchief-node/node_modules/colors,
+126 warn unmet dependency which is version 1.1.2
+127 error peerinvalid The package mongoose does not satisfy its siblings' peerDependencies requirements!
+127 error peerinvalid Peer mongoose-auto-increment@4.0.0 wants mongoose@~4.0.0
+127 error peerinvalid Peer mongoosastic@0.4.1 wants mongoose@3.8.x
+128 error System Linux 3.16.0-30-generic
+129 error command "/usr/bin/node" "/usr/bin/npm" "install" "validator" "--save"
+130 error cwd /home/kingkoded/Projects/eigenvalue/tagchief-node
+131 error node -v v0.10.36
+132 error npm -v 1.4.28
+133 error code EPEERINVALID
+134 verbose exit [ 1, true ]

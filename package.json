@@ -55,6 +55,7 @@
     "mime": "latest",
     "moment": "^2.9.0",
     "mongoose": "4.0.5",
+    "mongoosastic": "3.1.2",
     "mongoose-unique-validator": "latest",
     "morgan": "latest",
     "node-gcm": "^0.9.14",
@@ -71,6 +72,7 @@
     "q": "latest",
     "redis": "^0.12.1",
     "restler": "latest",
+    "validator": "4.0.2",
     "view-helpers": "latest"
   },
   "devDependencies": {
