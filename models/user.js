@@ -108,19 +108,21 @@ var userFunctions = {
 
         //Check if userid exists
         //Find username
+        // UserModel.findOne({
+        //     $or: [{
+        //         phoneNumber: data.phoneNumber
+        //     },
+        //     {
+        //         email: data.email
+        //     }, {
+        //         username: data.username
+        //     }, {
+        //         _id: data.userId
+        //     }]
+        // }).exec(function(err, i) {
         UserModel.findOne({
-            $or: [{
-                phoneNumber: data.phoneNumber
-            },
-            {
                 email: data.email
-            }, {
-                username: data.username
-            }, {
-                _id: data.userId
-            }]
         }).exec(function(err, i) {
-
 
 
             if (err) {
