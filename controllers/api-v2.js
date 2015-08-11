@@ -11,7 +11,7 @@ module.exports.routes = function (app) {
     });
 
   app.route('/api/v2/*')
-  .all(cors(appConfig.cors.options), passport.authenticate('bearer', { session: false }));
+  .all(cors(appConfig.cors.options),passport.authenticate('bearer', { session: false }));
 
   require('./apiv2/users').routes(app);
   require('./apiv2/locations').routes(app);

@@ -24,6 +24,7 @@ function search_for_location (req, res, next) {
 }
 
 module.exports.routes = function (app) {
+
   app.route('/api/v2/locations')
   .get(function (req, res, next) {
     var ld = new LocationsDevices();

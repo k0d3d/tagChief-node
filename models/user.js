@@ -1156,7 +1156,7 @@ User.prototype.getAccessLogs = function (doc) {
 
 User.prototype.findUser = function(id) {
     return userFunctions.findUser({
-        userId: id
+        _id: id
     });
 };
 
