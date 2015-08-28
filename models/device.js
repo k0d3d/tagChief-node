@@ -598,6 +598,18 @@ function LocationDeviceObject () {
   LocationDeviceObject.prototype.addTagLocation = function addTagLocation (body, userId) {
       var q = Q.defer(),
           locationData = body.location || {};
+      if (_isString(body)) {
+        if (JSON.parse(body)) {
+          body = JSON.parse(body);
+        } else {
+          q.reject(new Error('InvalidParams'));
+          return q.promise;
+        }
+      }
+      if (!isObject(body)) {
+        q.reject(new Error('InvalidParams'));
+        return q.promise;
+      }
       if (locationData.id) {
         TCLocation.find({
           _id: locationData.id
