@@ -1,5 +1,6 @@
   var errors = require('../lib/errors.js'),
       GPushMessenger = require('../lib/gcm.js'),
+      GooglePlaces = require('googleplaces'),
       Q = require('q'),
       Device = require('./media/device'),
       User = require('./user').UserModel,
@@ -185,15 +186,9 @@ var deviceFn = {
    * @return {[type]}          [description]
    */
   inProximity : function inProximity ( geoCoords, query) {
-      // if (arguments.length == 1 && _.isArray(arguments[0])) {
-      //   console.log('slice');
-      //   geoCoords = arguments[0];
-      //   query = arguments[1];
-      // }
-
-
       var q = Q.defer(),
           limit = query.limit || 10,
+          page = query.page || 0,
           // maxDistance = query.maxDistance || 0.9;
           maxDistance = query.maxDistance || 0.055;
           maxDistance = maxDistance/111.12;
@@ -201,30 +196,72 @@ var deviceFn = {
       if (geoCoords.length !== 2) {
         return q.reject(errors.nounce('InvalidParams'));
       }
-      // TCLocation.find({
-      //   "coords": {
-      //     $near: coords,
-      //     $maxDistance: 10
-      //   }
-      // })
-      // TCLocation.find( {   coords: { "$near": [ parseFloat(geoCoords[0]), parseFloat(geoCoords[1])],  "$maxDistance": maxDistance }} )
-      TCLocation.find( {
-        coords: {
-          "$near": geoCoords,
-          "$maxDistance": maxDistance
-        }
-      })
-      .limit(limit)
-      .exec(function (err, locations) {
-        if (err) {
-          return q.reject(err);
-        }
 
-        if (locations.length) {
-          return q.resolve(locations);
-        }
-        return q.resolve([]);
+      function recur_add (gLocationArray, cb) {
+        var g = gLocationArray.pop();
+        TCLocation.update({
+          google_place_id: g.place_id
+        }, {
+          $set: {
+            name: g.name,
+            category: g.types[0],
+            coords: [g.geometry.location.lng, g.geometry.location.lat],
+            tags: g.types,
+            longitude: g.geometry.location.lng,
+            latitude: g.geometry.location.lat,
+            lon: g.geometry.location.lng,
+            lat: g.geometry.location.lat,
+            address: g.vicinity,
+            state: g.vicinity,
+            google_place_id: g.place_id,
+          },
+        }, {upsert: true})
+        .exec(function (err, d) {
+          if (err) {
+            console.log(err);
+          }
+          if (gLocationArray.length) {
+            recur_add(gLocationArray, cb);
+          } else {
+            cb();
+          }
+        });
+      }
+
+      var googlePlaces = new GooglePlaces('AIzaSyCOt9IYHpYN22m7alw_HKi5y5WBgu57p4s', 'json');
+      googlePlaces.placeSearch({
+        location: [geoCoords[1], geoCoords[0]],
+        types: ['atm']
+      }, function (error, response) {
+          if (error) throw error;
+          if (response.status === 'OK' && response.results.length) {
+
+            recur_add(response.results, function () {
+
+              TCLocation.find({
+                coords: {
+                  "$near": geoCoords,
+                  "$maxDistance": maxDistance
+                }
+              })
+              .limit(limit)
+              .skip(limit * page)
+              .exec(function (err, locations) {
+                if (err) {
+                  return q.reject(err);
+                }
+
+                if (locations.length) {
+
+                  return q.resolve(locations);
+                }
+                return q.resolve([]);
+              });
+            });
+          }
+          // console.log(response);
       });
+
       return q.promise;
   },
   findALocationById: function findALocationById (locationId) {

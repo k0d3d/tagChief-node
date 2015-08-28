@@ -50,7 +50,9 @@ var LocationSchema = new Schema({
     state: {type: String},
     machine_brand: {type: String},
     offsite_branch: {type: String},
-    photos: [LocationImages]
+    photos: [LocationImages],
+    google_place_id: {type: String},
+    googleId: {type: String}
 });
 
 var CheckInSchema = new Schema ({
