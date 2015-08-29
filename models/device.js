@@ -635,7 +635,7 @@ function LocationDeviceObject () {
   LocationDeviceObject.prototype.addTagLocation = function addTagLocation (body, userId) {
       var q = Q.defer(),
           locationData = body.location || {};
-      if (_isString(body)) {
+      if (_.isString(body)) {
         if (JSON.parse(body)) {
           body = JSON.parse(body);
         } else {
@@ -643,7 +643,7 @@ function LocationDeviceObject () {
           return q.promise;
         }
       }
-      if (!isObject(body)) {
+      if (!_.isObject(body)) {
         q.reject(new Error('InvalidParams'));
         return q.promise;
       }
