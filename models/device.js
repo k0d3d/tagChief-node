@@ -258,6 +258,26 @@ var deviceFn = {
                 return q.resolve([]);
               });
             });
+          } else {
+              TCLocation.find({
+                coords: {
+                  "$near": geoCoords,
+                  "$maxDistance": maxDistance
+                }
+              })
+              .limit(limit)
+              .skip(limit * page)
+              .exec(function (err, locations) {
+                if (err) {
+                  return q.reject(err);
+                }
+
+                if (locations.length) {
+
+                  return q.resolve(locations);
+                }
+                return q.resolve([]);
+              });
           }
           // console.log(response);
       });
