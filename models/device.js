@@ -22,14 +22,19 @@ var deviceFn = {
       ob.locationData = loc;
       popped.push(ob);
       if (docs.length) {
+        console.log('well popped, proceeding');
         deviceFn.recur_location_fetch(docs, popped, cb);
       } else {
+        console.log('done popping');
         return cb(popped);
       }
     }, function (err) {
+      console.log(err);
       if (docs.length) {
+        console.log('popped error, continuing');
         deviceFn.recur_location_fetch(docs, popped, cb);
       } else {
+        console.log('popped error, ended');
         return cb(popped);
       }
     });
@@ -51,6 +56,7 @@ var deviceFn = {
           if(docs.length) {
 
             deviceFn.recur_location_fetch(docs, [], function (poppedDoc) {
+              console.log('done popping');
               return q.resolve(poppedDoc);
             });
 
@@ -298,6 +304,8 @@ var deviceFn = {
         if (l) {
           return q.resolve(l);
         }
+
+        q.reject(new Error('DocumentNotFound'));
       });
       return q.promise;
   },
