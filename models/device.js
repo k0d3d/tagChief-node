@@ -400,7 +400,7 @@ var deviceFn = {
     var q = Q.defer();
     params = params || {};
     var dbQuery = TCLocation.find();
-    dbQuery.limit(params.rpp || 20);
+    dbQuery.limit(params.rpp || 100);
     if (params.page) {
       dbQuery.skip(params.page * params.limit);
     }
