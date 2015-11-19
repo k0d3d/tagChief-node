@@ -237,7 +237,7 @@ var deviceFn = {
       var googlePlaces = new GooglePlaces('AIzaSyCOt9IYHpYN22m7alw_HKi5y5WBgu57p4s', 'json');
       googlePlaces.placeSearch({
         location: [geoCoords[1], geoCoords[0]],
-        types: ['atm']
+        types: ['atm', 'gas_station']
       }, function (error, response) {
           if (error) throw error;
           if (response.status === 'OK' && response.results.length) {
