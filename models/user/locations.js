@@ -8,14 +8,15 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     uniqueValidator = require('mongoose-unique-validator');
 
-var LocationImages = new Schema ({
+var LocationMedia = new Schema ({
   fileName: {type: String},
   locationId: {type: Schema.ObjectId},
   addedOn: {type: Date, default: Date.now},
   featured: {type: Boolean},
   type: {type: String},
   isVisible: {type: Boolean, default:true },
-  uploader: {type: Schema.ObjectId}
+  uploader: {type: Schema.ObjectId},
+  mediaType: {type: String}
 });
 
 var LocationSchema = new Schema({
@@ -23,6 +24,10 @@ var LocationSchema = new Schema({
     description:String,
     category: {type: String},
     specials: [{type: String}],
+    props : [{
+      name: String,
+      value: String
+    }],
     tags: [{type: String}],
     dateAdded: {type: Date, default: Date.now},
     longitude: Number,
@@ -48,9 +53,7 @@ var LocationSchema = new Schema({
     ward: {type: String},
     lga: {type: String},
     state: {type: String},
-    machine_brand: {type: String},
-    offsite_branch: {type: String},
-    photos: [LocationImages],
+    media: [LocationMedia],
     google_place_id: {type: String},
     googleId: {type: String}
 });
@@ -63,6 +66,14 @@ var CheckInSchema = new Schema ({
   deviceId: {type: String},
   category: {type: String},
   questions: []
+});
+
+var QuestionSchema = new Schema ({
+  author: {type: Schema.ObjectId},
+  title: {type: String},
+  preferred: {type: String},
+  addedOn: {type: Date, default: Date.now},
+  locationId: {type: Schema.ObjectId}
 });
 
 var ActionSchema = new Schema ({
@@ -84,13 +95,25 @@ var FeedBackAnswers = new Schema ({
   checkInId: {type: Schema.ObjectId},
   locationId: {type: Schema.ObjectId},
   nextQuestion: {type: Number},
-  questions: [Schema.Types.Mixed]
+  questionId: {type: Schema.ObjectId},
+  answers: [{
+      timeUpdated :{type: Date},
+      decision : {type: String},
+      dateTriggered : {type: Date},
+      hasComment:  {type: String},
+      hasImage:  {type: String},
+      hasVideo:  {type: String}
+    }]
 });
 
 var Question = new Schema ({
   qid: {type: String},
   creator: {type: Schema.ObjectId},
-  locationId: {type: Schema.ObjectId}
+  locationId: {type: Schema.ObjectId},
+  props : [{
+    name: String,
+    value: String
+  }]
 });
 
 module.exports = {

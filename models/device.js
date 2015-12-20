@@ -22,19 +22,15 @@ var deviceFn = {
       ob.locationData = loc;
       popped.push(ob);
       if (docs.length) {
-        console.log('well popped, proceeding');
         deviceFn.recur_location_fetch(docs, popped, cb);
       } else {
-        console.log('done popping');
         return cb(popped);
       }
     }, function (err) {
       console.log(err);
       if (docs.length) {
-        console.log('popped error, continuing');
         deviceFn.recur_location_fetch(docs, popped, cb);
       } else {
-        console.log('popped error, ended');
         return cb(popped);
       }
     });
@@ -237,7 +233,7 @@ var deviceFn = {
       var googlePlaces = new GooglePlaces('AIzaSyCOt9IYHpYN22m7alw_HKi5y5WBgu57p4s', 'json');
       googlePlaces.placeSearch({
         location: [geoCoords[1], geoCoords[0]],
-        types: ['atm', 'gas_station']
+        types: "atm|gas_station"
       }, function (error, response) {
           if (error) throw error;
           if (response.status === 'OK' && response.results.length) {
@@ -402,7 +398,7 @@ var deviceFn = {
     var dbQuery = TCLocation.find();
     dbQuery.limit(params.rpp || 100);
     if (params.page) {
-      dbQuery.skip(params.page * params.limit);
+      dbQuery.skip(params.page * params.rpp);
     }
     dbQuery.sort({dateAdded: -1});
     dbQuery.populate({path: 'author', select: 'email', model: 'User'});
@@ -861,9 +857,10 @@ function LocationDeviceObject () {
       checkInId: body.checkInId
     }, {
       $set: {
-        questions: body.questions,
-        nextQuestion: body.nextQuestion
-      }
+        locationId: body.locationId,
+        questionId: body.questionId,
+      },
+      $push: answers
     }, {upsert: true}, function (err, doc) {
           if (err) {
             return q.reject(err);
