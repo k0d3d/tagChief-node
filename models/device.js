@@ -6,6 +6,7 @@
       User = require('./user').UserModel,
       TCLocation = require('./user/locations').TCLocation,
       CheckLog = require('./user/locations').CheckLog,
+      Questions = require('./user/locations').Questions,
       FeedBackAnswers = require('./user/locations').FeedBackAnswer,
       Message = require('./message'),
       _ = require('lodash');
@@ -215,7 +216,7 @@ var deviceFn = {
             lat: g.geometry.location.lat,
             address: g.vicinity,
             state: g.vicinity,
-            google_place_id: g.place_id,
+            google_place_id: g.place_id
           },
         }, {upsert: true})
         .exec(function (err, d) {
@@ -392,22 +393,91 @@ var deviceFn = {
 
       return q.promise;
   },
-  fetchLocationsByParams: function fetchLocationsByParams (params) {
+  countLocationsByParams: function countLocationsByParams (params) {
     var q = Q.defer();
+
     params = params || {};
-    var dbQuery = TCLocation.find();
-    dbQuery.limit(params.rpp || 100);
-    if (params.page) {
-      dbQuery.skip(params.page * params.rpp);
-    }
-    dbQuery.sort({dateAdded: -1});
-    dbQuery.populate({path: 'author', select: 'email', model: 'User'});
+    var dbQuery = TCLocation.count();
+
     dbQuery.exec(function (err, docs) {
       if (err) {
         return q.reject(err);
       }
       return q.resolve(docs);
     });
+
+    return q.promise;
+  },
+  /**
+   * this method queries database records for locations that
+   * match the criteria in the 'params' argument.
+   * @param  {Object} params key/ value object containing
+   * fields and conditions that create the fetch criteria.
+   * @return {Promise}        [description]
+   */
+  fetchLocationsByParams: function fetchLocationsByParams (params) {
+    var q = Q.defer(),
+    conditions = {},
+    populate_str = {path: 'author', select: 'email', model: 'User'};
+
+    params = params || {};
+
+    try {
+      conditions = JSON.parse(params.conditions);
+      params.search_query = JSON.parse(params.search_query);
+    } catch (e) {
+      //empty, so do nothing
+    }
+
+
+
+    if (params.name) {
+      conditions.name = {
+        '$regex': new RegExp(params.name, 'i')
+      };
+    }
+
+    var dbQuery = TCLocation.find(conditions);
+
+    dbQuery.limit(params.rpp || 100);
+    if (params.page) {
+      dbQuery.skip(params.page * params.rpp);
+    }
+    if (!params.entry_type) {
+      dbQuery.where('entry_type', 'user');
+    }
+    if (Boolean(params.is_search) && params.search_query && params.search_query.length) {
+      _.each(params.search_query, function (field, condition) {
+        console.log(field);
+        console.log(condition);
+        if (field && condition.operate && condition.value) {
+          console.log(dbQuery.where(field)[condition.operate](condition.value));
+          dbQuery.where(field)[condition.operate](condition.value);
+        }
+      });
+    }
+
+    dbQuery.sort({dateAdded: -1});
+
+    //find entries by specific accounts
+    if (params.author) {
+      populate_str.match = {'email' : new RegExp(params.author, 'i')};
+    }
+    dbQuery.populate(populate_str);
+    dbQuery.exec(function (err, docs) {
+      if (err) {
+        return q.reject(err);
+      }
+      return q.resolve(docs);
+    });
+
+    return q.promise;
+  },
+  create_child_location: function create_child_location (params) {
+    var q = Q.defer();
+
+    var dbQuery = new TCLocation();
+    // dbQuery.
 
     return q.promise;
   },
@@ -422,7 +492,7 @@ var deviceFn = {
     // dbQuery.limit(params.rpp || 20);
     dbQuery.limit(5);
     if (params.page) {
-      dbQuery.skip(params.page * params.limit);
+      dbQuery.skip(params.page * params.rpp);
     }
     dbQuery.sort({checkInTime: -1});
     dbQuery.populate({path: 'locationId', model: 'Location'});
@@ -475,6 +545,34 @@ function LocationDeviceObject () {
 
 
  LocationDeviceObject.prototype.constructor = LocationDeviceObject;
+
+
+ LocationDeviceObject.prototype.cloneLocation = function cloneLocation (parents, authority) {
+  var q = Q.defer(),
+      count = 0,
+      self = this;
+
+  if (parents.length) {
+    deviceFn.create_child_location({
+      authority: {
+        userId: authority.email,
+        author: authority.userId,
+        permissions: ['owner', 'write']
+      },
+      parentId: parents.pop()
+    })
+    .then(function () {
+      count++;
+      if (parents.length) {
+        self.cloneLocation(parents, authority);
+      } else {
+        q.resolve({locationsAdded: count});
+      }
+    })
+  }
+
+  return q.promise;
+ }
 
 
 /**
@@ -773,6 +871,9 @@ function LocationDeviceObject () {
         task.task = deviceFn.fetchLocationsByParams;
         task.args = [params];
         break;
+        case 'count_locations':
+        task.task = deviceFn.countLocationsByParams;
+        break;
         default:
         task.task = deviceFn.inProximity;
         task.args = [params.coords, params];
@@ -789,6 +890,49 @@ function LocationDeviceObject () {
 
       return q.promise;
   };
+
+  /**
+   * adds a new question to the database
+   * @param  {[type]} userId [description]
+   * @param  {[type]} body   [description]
+   * @return {[type]}        [description]
+   */
+  LocationDeviceObject.prototype.insertQuestion  = function insertQuestion (userId, body) {
+    var q = Q.defer();
+
+    var qq = new Questions();
+    qq.author =  userId;
+    qq.assignee =  body.email_assignee;
+    qq.title =  body.questions[0];
+    qq.preferred =  body.response_type;
+
+    qq.save(function (err) {
+      if (err) {
+        return q.reject(err);
+      }
+      q.resolve(qq._id);
+    });
+
+    return q.promise;
+  };
+
+  LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, params) {
+    var q = Q.defer();
+
+    Questions.find()
+    .exec(function (err, m) {
+      if (err) {
+        return q.reject(err);
+      }
+
+      q.resolve(m);
+    })
+
+    return q.promise;
+  }
+
+
+
 
   /**
    * Checks a user into a location

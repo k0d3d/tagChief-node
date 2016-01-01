@@ -15,5 +15,7 @@ module.exports.routes = function (app) {
 
   require('./apiv2/users').routes(app);
   require('./apiv2/locations').routes(app);
+  require('./apiv2/stats').routes(app);
+  require('./apiv2/questions').routes(app);
 
 };

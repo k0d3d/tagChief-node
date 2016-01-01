@@ -4,9 +4,7 @@
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    encrypt = require('../../lib/commons.js').encrypt,
-    _ = require('lodash'),
-    uniqueValidator = require('mongoose-unique-validator');
+    _ = require('lodash');
 
 var LocationMedia = new Schema ({
   fileName: {type: String},
@@ -28,6 +26,8 @@ var LocationSchema = new Schema({
       name: String,
       value: String
     }],
+    parent: {type: Schema.ObjectId},
+    entry_type: {type: String, default: 'system'},
     tags: [{type: String}],
     dateAdded: {type: Date, default: Date.now},
     longitude: Number,
@@ -70,10 +70,11 @@ var CheckInSchema = new Schema ({
 
 var QuestionSchema = new Schema ({
   author: {type: Schema.ObjectId},
+  assignee: {type: String},
   title: {type: String},
   preferred: {type: String},
   addedOn: {type: Date, default: Date.now},
-  locationId: {type: Schema.ObjectId}
+  locations: [{type: Schema.ObjectId}]
 });
 
 var ActionSchema = new Schema ({
@@ -106,20 +107,12 @@ var FeedBackAnswers = new Schema ({
     }]
 });
 
-var Question = new Schema ({
-  qid: {type: String},
-  creator: {type: Schema.ObjectId},
-  locationId: {type: Schema.ObjectId},
-  props : [{
-    name: String,
-    value: String
-  }]
-});
 
 module.exports = {
-  "PointsHistory": mongoose.model('PointsHistory', PointsSchema),
-  "Review": mongoose.model('Reviews', ActionSchema),
-  "TCLocation": mongoose.model('Location', LocationSchema),
-  "CheckLog": mongoose.model('Checklog', CheckInSchema),
-  "FeedBackAnswer": mongoose.model('FeedBackAnswer', FeedBackAnswers)
+  'PointsHistory': mongoose.model('PointsHistory', PointsSchema),
+  'Review': mongoose.model('Reviews', ActionSchema),
+  'TCLocation': mongoose.model('Location', LocationSchema),
+  'CheckLog': mongoose.model('Checklog', CheckInSchema),
+  'Questions': mongoose.model('Questions', QuestionSchema),
+  'FeedBackAnswer': mongoose.model('FeedBackAnswer', FeedBackAnswers)
 };
