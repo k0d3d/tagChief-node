@@ -74,7 +74,8 @@ var QuestionSchema = new Schema ({
   title: {type: String},
   preferred: {type: String},
   addedOn: {type: Date, default: Date.now},
-  locations: [{type: Schema.ObjectId}]
+  locations: [{type: Schema.ObjectId}],
+  currentGroup: {type: String}
 });
 
 var ActionSchema = new Schema ({
@@ -95,8 +96,8 @@ var PointsSchema = new Schema ({
 var FeedBackAnswers = new Schema ({
   checkInId: {type: Schema.ObjectId},
   locationId: {type: Schema.ObjectId},
-  nextQuestion: {type: Number},
   questionId: {type: Schema.ObjectId},
+  timing: {type: Number},
   answers: [{
       timeUpdated :{type: Date},
       decision : {type: String},

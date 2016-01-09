@@ -14,6 +14,21 @@
 
 
 var deviceFn = {
+  listQuestionsByParams: function listQuestionsByParams (params) {
+    var q = Q.defer();
+    params = params || {};
+
+    Questions.find(params)
+    .exec(function (err, m) {
+      if (err) {
+        return q.reject(err);
+      }
+
+      q.resolve(m);
+    });
+
+    return q.promise;
+  },
   recur_location_fetch: function recur_location_fetch (docs, popped, cb) {
     var ob = docs.pop();
     ob = ob.toObject();
@@ -236,8 +251,8 @@ var deviceFn = {
         location: [geoCoords[1], geoCoords[0]],
         types: "atm|gas_station"
       }, function (error, response) {
-          if (error) throw error;
-          if (response.status === 'OK' && response.results.length) {
+          // if (error) throw error;
+          if (!error && response && response.status === 'OK' && response.results.length) {
 
             recur_add(response.results, function () {
 
@@ -905,6 +920,7 @@ function LocationDeviceObject () {
     qq.assignee =  body.email_assignee;
     qq.title =  body.questions[0];
     qq.preferred =  body.response_type;
+    qq.currentGroup = body.currentGroup;
 
     qq.save(function (err) {
       if (err) {
@@ -919,13 +935,11 @@ function LocationDeviceObject () {
   LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, params) {
     var q = Q.defer();
 
-    Questions.find()
-    .exec(function (err, m) {
-      if (err) {
-        return q.reject(err);
-      }
-
+    deviceFn.listQuestionsByParams()
+    .then(function (m) {
       q.resolve(m);
+    }, function (err) {
+      return q.reject(err);
     })
 
     return q.promise;

@@ -68,14 +68,12 @@ module.exports.routes = function (app) {
     //updates the profile for the currently
   //logged in user
   .put(function (req, res, next) {
-    console.log(req.body);
     var userId = req.user._id;
     var users = new User();
     users.updateUserAccount(userId, _.extend({scope: 'PROFILE'}, _.pick(req.body, ['firstname', 'lastname', 'phoneNumber'])))
     .then(function (r) {
       res.json(r);
     }, function (err) {
-      console.log(err);
       next(err);
     });
   })
@@ -103,7 +101,6 @@ module.exports.routes = function (app) {
     createUser.then(function (r) {
       return res.status(200).json(r);
     }, function (err) {
-      console.log(err.stack);
       return res.status(400).json(err);
     });
   });

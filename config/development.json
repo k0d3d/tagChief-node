@@ -1,7 +1,7 @@
 {
     "db": {
         "server": "localhost",
-        "database": "tagChiefStats",
+        "database": "heroku_app33864268",
         "port": 27017,
         "user": "",
         "pass": ""
