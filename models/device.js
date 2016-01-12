@@ -209,7 +209,7 @@ var deviceFn = {
           page = query.page || 0,
           // maxDistance = query.maxDistance || 0.9;
           maxDistance = query.maxDistance || 0.055;
-          maxDistance = maxDistance/111.12;
+          maxDistance = 0.30/111.12;
 
       if (geoCoords.length !== 2) {
         return q.reject(errors.nounce('InvalidParams'));
@@ -915,12 +915,13 @@ function LocationDeviceObject () {
   LocationDeviceObject.prototype.insertQuestion  = function insertQuestion (userId, body) {
     var q = Q.defer();
 
-    var qq = new Questions();
+    var qq = new Questions(body);
     qq.author =  userId;
     qq.assignee =  body.email_assignee;
     qq.title =  body.questions[0];
     qq.preferred =  body.response_type;
     qq.currentGroup = body.currentGroup;
+    qq.promptAfter = body.promptAfter;
 
     qq.save(function (err) {
       if (err) {
@@ -931,6 +932,8 @@ function LocationDeviceObject () {
 
     return q.promise;
   };
+
+
 
   LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, params) {
     var q = Q.defer();
@@ -955,13 +958,13 @@ function LocationDeviceObject () {
    * @param  {[type]} userId     [description]
    * @return {[type]}            [description]
    */
-  LocationDeviceObject.prototype.checkIntoLocation = function checkIntoLocation (deviceId, locationId, userId) {
+  LocationDeviceObject.prototype.checkIntoLocation = function checkIntoLocation (deviceId, locationId, user) {
       var q = Q.defer();
 
       deviceFn.addACheckInRecord({
         deviceId: deviceId,
         locationId: locationId,
-        userId: userId
+        userId: user._id
       })
       .then(function (checkInId) {
         var pro = CheckLog.populate(checkInId, {
@@ -970,7 +973,18 @@ function LocationDeviceObject () {
           model: 'Location'
         });
         pro.then(function (doc) {
-          return q.resolve(doc);
+          Questions.find({
+            // assignee:
+          })
+          .exec(function (err, qt) {
+            if (err) {
+              return q.reject(err);
+            }
+            var docO = doc.toObject();
+            docO.questions = qt;
+            return q.resolve(docO);
+          })
+
         });
         //actions like reward a user / location should follow
       }, function (err) {

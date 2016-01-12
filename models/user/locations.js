@@ -75,7 +75,8 @@ var QuestionSchema = new Schema ({
   preferred: {type: String},
   addedOn: {type: Date, default: Date.now},
   locations: [{type: Schema.ObjectId}],
-  currentGroup: {type: String}
+  currentGroup: {type: String},
+  promptAfter: {type: Number}
 });
 
 var ActionSchema = new Schema ({
