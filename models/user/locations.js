@@ -97,16 +97,17 @@ var PointsSchema = new Schema ({
 var FeedBackAnswers = new Schema ({
   checkInId: {type: Schema.ObjectId},
   locationId: {type: Schema.ObjectId},
-  questionId: {type: Schema.ObjectId},
+  questions: {type: String},
   timing: {type: Number},
-  answers: [{
-      timeUpdated :{type: Date},
-      decision : {type: String},
-      dateTriggered : {type: Date},
-      hasComment:  {type: String},
-      hasImage:  {type: String},
-      hasVideo:  {type: String}
-    }]
+  timeUpdated :{type: Date},
+  decision : {type: String},
+  dateTriggered : {type: Date},
+  hasComment:  {type: String},
+  hasImage:  {type: String},
+  hasVideo:  {type: String},
+  preferred: {type: String},
+  addedOn: {type: Date},
+  clientPrimaryId: {type: String}
 });
 
 

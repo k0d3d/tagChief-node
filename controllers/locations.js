@@ -93,7 +93,7 @@ module.exports.routes = function (app) {
       task = dev.checkIntoLocation(req.body.deviceId, req.params.locationId, req.user._id);
       break;
       case 'UPDATECHECKIN':
-      task = dev.updateCheckInRecord(req.body, req.params.locationId, req.user._id);
+      task = dev.saveFeedback(req.body);
       break;
       default:
       break;

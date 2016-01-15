@@ -209,7 +209,8 @@ var deviceFn = {
           page = query.page || 0,
           // maxDistance = query.maxDistance || 0.9;
           maxDistance = query.maxDistance || 0.055;
-          maxDistance = 0.30/111.12;
+          maxDistance = 0.90/111.12; // correct value
+          // maxDistance = 0.30/111.12; // correct value nmachi2010
 
       if (geoCoords.length !== 2) {
         return q.reject(errors.nounce('InvalidParams'));
@@ -386,11 +387,11 @@ var deviceFn = {
           if (err) {
             return q.reject(err);
           }
-          if (!doc) {
+          if (!i) {
             return q.reject(errors.nounce('UpdateFailed'));
           }
 
-          return q.resolve(doc);
+          return q.resolve(i);
         });
       } else {
         mongoDocOrId.checkOutTime = Date.now();
@@ -546,6 +547,21 @@ var deviceFn = {
       q.reject(new Error ('update failed'));
     });
     return q.promise;
+  },
+  addCheckinAnswerRecord: function addCheckinAnswerRecord (params) {
+      var q = Q.defer();
+      params.clientPrimaryId = params._id;
+      params = _.omit(params, ['_id', '_rev']);
+      var f = new FeedBackAnswers(params);
+      f.save(function (err) {
+        if (err) {
+          return q.reject(err);
+        }
+        q.resolve();
+      });
+
+
+      return q.promise;
   }
 
 };
@@ -1010,7 +1026,7 @@ function LocationDeviceObject () {
 
       deviceFn.findACheckInEntry(checkInId, userId)
       // .then(deviceFn.isValidCheckIn)
-      .then(device.updateACheckInEntry)
+      .then(deviceFn.updateACheckInEntry)
       .then(function (response) {
         return q.resolve(response);
       }, function (err) {
@@ -1022,17 +1038,17 @@ function LocationDeviceObject () {
       return q.promise;
   };
 
-  LocationDeviceObject.prototype.updateCheckInRecord = function updateCheckInRecord (body) {
+  LocationDeviceObject.prototype.insertCheckInRecord = function insertCheckInRecord (body) {
     var q = Q.defer();
-
     FeedBackAnswers.update({
-      checkInId: body.checkInId
+      checkInId: body.checkInId,
+      locationId: body.locationId
     }, {
       $set: {
         locationId: body.locationId,
         questionId: body.questionId,
       },
-      $push: answers
+      $push: body.answer
     }, {upsert: true}, function (err, doc) {
           if (err) {
             return q.reject(err);
@@ -1047,6 +1063,19 @@ function LocationDeviceObject () {
     // q.resolve(body);
     return q.promise;
   };
+
+  LocationDeviceObject.prototype.saveFeedback = function (body) {
+      var q = Q.defer();
+
+      deviceFn.addCheckinAnswerRecord(body)
+      .then(function() {
+        return q.resolve();
+      }, function (err) {
+        return q.reject(err);
+      })
+
+      return q.promise;
+  }
 
   LocationDeviceObject.prototype.getLocationActivity = function getLocationActivity (locationId) {
     var q = Q.defer();
