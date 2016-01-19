@@ -55,7 +55,8 @@ var LocationSchema = new Schema({
     state: {type: String},
     media: [LocationMedia],
     google_place_id: {type: String},
-    googleId: {type: String}
+    googleId: {type: String},
+    feedback_group: {type: String}
 });
 
 var CheckInSchema = new Schema ({
@@ -75,7 +76,7 @@ var QuestionSchema = new Schema ({
   preferred: {type: String},
   addedOn: {type: Date, default: Date.now},
   locations: [{type: Schema.ObjectId}],
-  currentGroup: {type: String},
+  currentGroup: {type: String, default: 'a'},
   promptAfter: {type: Number}
 });
 

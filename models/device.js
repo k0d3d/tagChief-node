@@ -57,6 +57,7 @@ var deviceFn = {
     FeedBackAnswers.find(params)
     .limit(30)
     .populate({path: 'checkInId', model: 'Checklog'})
+    .populate({path: 'locationId', model: 'Location'})
     .exec(function (err, docs) {
           if (err) {
             return q.reject(err);
@@ -66,7 +67,7 @@ var deviceFn = {
           }
 
           if(docs.length) {
-
+            return q.resolve(docs);
             deviceFn.recur_location_fetch(docs, [], function (poppedDoc) {
               console.log('done popping');
               return q.resolve(poppedDoc);
@@ -208,8 +209,8 @@ var deviceFn = {
           limit = query.limit || 10,
           page = query.page || 0,
           // maxDistance = query.maxDistance || 0.9;
-          maxDistance = query.maxDistance || 0.055;
-          maxDistance = 0.90/111.12; // correct value
+          maxDistance = query.maxDistance || 0.90;
+          maxDistance = maxDistance/111.12; // correct value
           // maxDistance = 0.30/111.12; // correct value nmachi2010
 
       if (geoCoords.length !== 2) {
@@ -433,8 +434,8 @@ var deviceFn = {
    */
   fetchLocationsByParams: function fetchLocationsByParams (params) {
     var q = Q.defer(),
-    conditions = {},
-    populate_str = {path: 'author', select: 'email', model: 'User'};
+    conditions = {};
+
 
     params = params || {};
 
@@ -445,12 +446,22 @@ var deviceFn = {
       //empty, so do nothing
     }
 
-
+    if (params.category) {
+      conditions.category = params.category;
+    }
 
     if (params.name) {
       conditions.name = {
         '$regex': new RegExp(params.name, 'i')
       };
+    }
+    var maxDistance = params.maxDistance || 0.90;
+    if (params.lat && params.lng) {
+      conditions.coords ={
+        $near:[params.lng, params.lat],
+        $maxDistance : maxDistance/111.12
+      }
+
     }
 
     var dbQuery = TCLocation.find(conditions);
@@ -459,22 +470,27 @@ var deviceFn = {
     if (params.page) {
       dbQuery.skip(params.page * params.rpp);
     }
-    if (!params.entry_type) {
+
+    if (params.entry_type) {
+      dbQuery.where('entry_type', params.entry_type);
+    } else {
       dbQuery.where('entry_type', 'user');
+
     }
-    if (Boolean(params.is_search) && params.search_query && params.search_query.length) {
-      _.each(params.search_query, function (field, condition) {
-        console.log(field);
-        console.log(condition);
-        if (field && condition.operate && condition.value) {
-          console.log(dbQuery.where(field)[condition.operate](condition.value));
-          dbQuery.where(field)[condition.operate](condition.value);
-        }
-      });
-    }
+
+    // if (Boolean(params.is_search) && params.search_query && params.search_query.length) {
+    //   _.each(params.search_query, function (field, condition) {
+    //     // console.log(field);
+    //     // console.log(condition);
+    //     if (field && condition.operate && condition.value) {
+    //       console.log(dbQuery.where(field)[condition.operate](condition.value));
+    //       dbQuery.where(field)[condition.operate](condition.value);
+    //     }
+    //   });
+    // }
 
     dbQuery.sort({dateAdded: -1});
-
+    var populate_str = {path: 'author', select: 'email', model: 'User'};
     //find entries by specific accounts
     if (params.author) {
       populate_str.match = {'email' : new RegExp(params.author, 'i')};
@@ -492,7 +508,7 @@ var deviceFn = {
   create_child_location: function create_child_location (params) {
     var q = Q.defer();
 
-    var dbQuery = new TCLocation();
+    // var dbQuery = new TCLocation();
     // dbQuery.
 
     return q.promise;
@@ -521,13 +537,80 @@ var deviceFn = {
     });
     return q.promise;
   },
+  /**
+   * changes or removes something done by addLocationtoGroupClass.
+   * Adds or changes the group a location belongs to. If the location
+   * already belongs to an existing group. it can be overwritten.
+   *
+   *
+   * @param  {[type]} params [description]
+   * @return {[type]}        [description]
+   */
+  addLocationtoGroupClass: function addLocationtoGroupClass (params) {
+    var q = Q.defer();
 
-  addLocationAuthorityClass: function addLocationAuthorityClass (params) {
+    params = params || {};
+
+    TCLocation.update({
+      '_id': params.locationId,
+      'authority.userId': params.assignee,
+      'entry_type': 'user'
+    }, {
+      $set: {
+        'feedback_group': params.subjectGroup,
+      }
+    }, {upsert: true}, function (err, n) {
+      if (err) {
+        return q.reject(err);
+      }
+      if (n.count) {
+        return q.resolve(true);
+      }
+      q.reject(new Error ('update failed'));
+    });
+
+
+    // TCLocation.findOne({
+    //   '_id': params.locationId,
+    //   'entry_type': 'user',
+    //   'authority.userId': params.assignee
+    // })
+    // .exec(function (err, doc) {
+    //   if (err) {
+    //     return q.reject(err);
+    //   }
+    //   //update an existing
+    //   if (doc) {
+    //     doc.feedback_group = params.subjectGroup;
+    //     doc.save(function (err) {
+    //       if (err) {
+    //         return q.reject(err);
+    //       }
+    //       q.resolve();
+    //     });
+    //   }
+    //   //create a new one
+    //   else {
+    //     //find a match
+
+    //   }
+    // });
+
+
+    return q.promise;
+  },
+  /**
+   * changes or removes something done by addLocationAuthorityClass
+   * @param  {[type]} params [description]
+   * @return {[type]}        [description]
+   */
+  modifyLocationAuthorityClass: function modifyLocationAuthorityClass (params) {
     var q = Q.defer();
 
     params = params || {};
     TCLocation.update({
-      _id: params.locationId
+      '_id': params.locationId,
+      'authority.userId': params.assignee
     }, {
       $push: {
 
@@ -538,6 +621,58 @@ var deviceFn = {
           },
       }
     }, function (err, n) {
+      if (err) {
+        return q.reject(err);
+      }
+      if (n.count) {
+        return q.resolve(true);
+      }
+      q.reject(new Error ('update failed'));
+    });
+
+    return q.promise;
+  },
+
+  /**
+   * checks for an existing entry for this authority,
+   * an authority is a set of instructions / properties
+   * as a sub-document on a loction document. This specifies
+   * what users have access to certain location assets and
+   * properties.
+   * @param {[type]} params contains the  locationId,
+   */
+  addLocationAuthorityClass: function addLocationAuthorityClass (params) {
+    var q = Q.defer();
+    //
+    // Should do find and update
+    params = params || {};
+    TCLocation.update({
+      parent: params.locationId,
+      'authority.userId': params.assignee
+    }, {
+      $set: {
+        'parent': params.locationId,
+        'entry_type': 'user',
+        'authority' : [
+              {
+                userId: params.assignee,
+                author: params.author
+              }
+            ]
+      },
+      // $push: {
+
+      //   authority:
+      //     {
+      //       $each: [
+      //         {
+      //           userId: params.assignee,
+      //           author: params.author
+      //         }
+      //       ]
+      //     },
+      // }
+    }, {upsert: true}, function (err, n) {
       if (err) {
         return q.reject(err);
       }
@@ -951,18 +1086,22 @@ function LocationDeviceObject () {
 
 
 
-  LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, params) {
+  LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (authorId, group) {
     var q = Q.defer();
+    var params = {
+      authorId: authorId,
+      currentGroup: group || ''
+    };
 
-    deviceFn.listQuestionsByParams()
+    deviceFn.listQuestionsByParams(params)
     .then(function (m) {
       q.resolve(m);
     }, function (err) {
       return q.reject(err);
-    })
+    });
 
     return q.promise;
-  }
+  };
 
 
 
@@ -1072,10 +1211,10 @@ function LocationDeviceObject () {
         return q.resolve();
       }, function (err) {
         return q.reject(err);
-      })
+      });
 
       return q.promise;
-  }
+  };
 
   LocationDeviceObject.prototype.getLocationActivity = function getLocationActivity (locationId) {
     var q = Q.defer();
@@ -1092,28 +1231,133 @@ function LocationDeviceObject () {
     return q.promise;
   };
 
-
-  LocationDeviceObject.prototype.updateLocationRecord = function updateLocationRecord (locationId, updateParams) {
+  /**
+   * this should add or remove certain properties /
+   * usually in the authority sub-documents in a
+   * location document
+   * @param  {[type]} locationId   [description]
+   * @param  {[type]} updateParams [description]
+   * @return {[type]}              [description]
+   */
+  LocationDeviceObject.prototype.updateLocationAuthorityClass = function updateLocationAuthorityClass (reviewedDocument, author) {
     var q = Q.defer();
-    var action = [];
+    var result = {
+      doneArray : [],
+      errorArray : []
+    };
 
-    switch(updateParams.action) {
-      case 'authority':
-      action  = deviceFn.addLocationAuthorityClass;
-      break;
-      default:
-      break;
-    }
 
-    action.apply(null, [updateParams])
-    .then(function (done) {
-      q.resolve(done);
-    }, function (err) {
-      q.reject(err);
-    });
+
+    var locationList = reviewedDocument.locationList;
+
+
+    function recursive_callback(locationList) {
+
+      var _instruct = locationList.shift(),
+      _cb;
+
+      switch(_instruct.action) {
+        case 'add-authority':
+        _cb  = deviceFn.addLocationAuthorityClass;
+        break;
+        case 'modify-authority':
+        _cb  = deviceFn.modifyLocationAuthorityClass;
+        break;
+        default:
+        break;
+      }
+
+      _cb({
+        locationId: _instruct.locationId,
+        assignee: reviewedDocument.assignee,
+        authority: _instruct.authority,
+        author: author
+      })
+      .then(function(done) {
+        result.doneArray.push(done);
+        if (locationList.length) {
+          recursive_callback(locationList);
+        } else {
+          q.resolve(result);
+        }
+      }, function (err) {
+        result.errorArray.push(err);
+        if (locationList.length) {
+          recursive_callback(locationList)
+        } else {
+          q.resolve(result);
+        }
+      });
+    };
+
+    recursive_callback(locationList);
 
     return q.promise;
   };
+
+  /**
+   * Adds, updates, removes a location from a question-feedback group
+   * @return {[type]} [description]
+   */
+  LocationDeviceObject.prototype.updateSubjectGroup = function updateSubjectGroup (reviewedDocument) {
+    var q = Q.defer();
+    var result = {
+      doneArray : [],
+      errorArray : []
+    };
+
+
+
+    function recursive_callback(locationList) {
+
+      var _instruct = locationList.shift(),
+      _cb;
+
+      switch(_instruct.action) {
+        case 'add-group':
+        _cb  = deviceFn.addLocationtoGroupClass;
+        break;
+        case 'modify-group':
+        _cb  = deviceFn.modifyLocationGroupClass;
+        break;
+        default:
+        break;
+      }
+
+      _cb({
+        locationId: _instruct.locationId,
+        author: _instruct.author,
+        assignee: reviewedDocument.assignee || 'admin@tagchief.com',
+        subjectGroup: reviewedDocument.subjectGroup
+      })
+      .then(function(done) {
+        result.doneArray.push(done);
+        if (locationList.length) {
+          recursive_callback(locationList);
+        } else {
+          q.resolve(result);
+        }
+      }, function (err) {
+        result.errorArray.push(err);
+        if (locationList.length) {
+          recursive_callback(locationList)
+        } else {
+          q.resolve(result);
+        }
+      });
+    }
+
+    recursive_callback(reviewedDocument.locationList);
+    //deviceFn.fetchLocationsByParams(reviewedDocument.criteria)
+    // .then(function(loctns) {
+    // },
+    // function (err) {
+    //   q.reject(err);
+    // });
+
+    return q.promise;
+
+  },
 
   LocationDeviceObject.prototype.searchLocations = function searchLocations (query) {
     var q = Q.defer();

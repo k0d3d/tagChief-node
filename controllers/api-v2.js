@@ -11,11 +11,15 @@ module.exports.routes = function (app) {
     });
 
   app.route('/api/v2/*')
-  .all(cors(appConfig.cors.options),passport.authenticate('bearer', { session: false }));
+  .all(cors(appConfig.cors.options),function(req, res, next) {
+    console.log(req.url);
+    next();
+  },passport.authenticate('bearer', { session: false }));
 
   require('./apiv2/users').routes(app);
   require('./apiv2/locations').routes(app);
   require('./apiv2/stats').routes(app);
   require('./apiv2/questions').routes(app);
+  require('./apiv2/warden').routes(app);
 
 };
