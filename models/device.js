@@ -1117,7 +1117,7 @@ function LocationDeviceObject () {
   LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, group) {
     var q = Q.defer();
     var params = {
-      currentGroup: group || 'a',
+      // currentGroup: group || 'a',
       assignee: userId
     };
 
