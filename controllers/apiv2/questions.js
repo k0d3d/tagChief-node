@@ -6,9 +6,9 @@ module.exports.routes = function (app) {
   //
   app.get('/api/v2/questions', function (req, res, next) {
     var pimp_sip = new PimpCup();
-    var userId = req.user._id;
+    var userId = req.user.email;
 
-    pimp_sip.listQuestionsByParams(userId, req.query)
+    pimp_sip.listQuestionsByParams(userId, req.query.currentGroup)
     .then(function (d) {
       res.json(d);
     });

@@ -233,7 +233,8 @@ var deviceFn = {
             lat: g.geometry.location.lat,
             address: g.vicinity,
             state: g.vicinity,
-            google_place_id: g.place_id
+            google_place_id: g.place_id,
+            entry_type: 'system'
           },
         }, {upsert: true})
         .exec(function (err, d) {
@@ -259,6 +260,7 @@ var deviceFn = {
             recur_add(response.results, function () {
 
               TCLocation.find({
+                entry_type: 'user',
                 coords: {
                   "$near": geoCoords,
                   "$maxDistance": maxDistance
@@ -280,6 +282,7 @@ var deviceFn = {
             });
           } else {
               TCLocation.find({
+                entry_type: 'user',
                 coords: {
                   "$near": geoCoords,
                   "$maxDistance": maxDistance
@@ -460,7 +463,7 @@ var deviceFn = {
       conditions.coords ={
         $near:[params.lng, params.lat],
         $maxDistance : maxDistance/111.12
-      }
+      };
 
     }
 
@@ -470,12 +473,14 @@ var deviceFn = {
     if (params.page) {
       dbQuery.skip(params.page * params.rpp);
     }
-
     if (params.entry_type) {
       dbQuery.where('entry_type', params.entry_type);
     } else {
       dbQuery.where('entry_type', 'user');
+    }
 
+    if (params.assignee) {
+      dbQuery.where('authority.userId', params.assignee);
     }
 
     // if (Boolean(params.is_search) && params.search_query && params.search_query.length) {
@@ -638,7 +643,9 @@ var deviceFn = {
    * an authority is a set of instructions / properties
    * as a sub-document on a loction document. This specifies
    * what users have access to certain location assets and
-   * properties.
+   * properties. All locations on tagchief have a parent-child
+   * relationship. This methods helps set up this relationship,
+   *
    * @param {[type]} params contains the  locationId,
    */
   addLocationAuthorityClass: function addLocationAuthorityClass (params) {
@@ -646,11 +653,17 @@ var deviceFn = {
     //
     // Should do find and update
     params = params || {};
-    TCLocation.update({
-      parent: params.locationId,
-      'authority.userId': params.assignee
-    }, {
-      $set: {
+    TCLocation.findOne(
+      {
+        _id: params.locationId,
+        'entry_type': 'system'
+      })
+    .exec(function (err, d) {
+      if (err) {
+        return q.reject(err);
+      }
+      var $set = d.toObject();
+      $set = _.extend({}, $set, {
         'parent': params.locationId,
         'entry_type': 'user',
         'authority' : [
@@ -659,28 +672,40 @@ var deviceFn = {
                 author: params.author
               }
             ]
-      },
-      // $push: {
-
-      //   authority:
-      //     {
-      //       $each: [
-      //         {
-      //           userId: params.assignee,
-      //           author: params.author
-      //         }
-      //       ]
-      //     },
-      // }
-    }, {upsert: true}, function (err, n) {
-      if (err) {
-        return q.reject(err);
-      }
-      if (n.count) {
+      });
+      delete $set._id;
+      var t = new TCLocation($set);
+      t.save(function (err) {
+        if (err) {
+          return q.reject(err);
+        }
         return q.resolve(true);
-      }
-      q.reject(new Error ('update failed'));
+      })
+
     });
+    // TCLocation.update({
+    //   parent: params.locationId,
+    //   'authority.userId': params.assignee
+    // }, {
+    //   $set: {
+    //     'parent': params.locationId,
+    //     'entry_type': 'user',
+    //     'authority' : [
+    //           {
+    //             userId: params.assignee,
+    //             author: params.author
+    //           }
+    //         ]
+    //   }
+    // }, {upsert: true}, function (err, n) {
+    //   if (err) {
+    //     return q.reject(err);
+    //   }
+    //   if (n.count) {
+    //     return q.resolve(true);
+    //   }
+    //   q.reject(new Error ('update failed'));
+    // });
     return q.promise;
   },
   addCheckinAnswerRecord: function addCheckinAnswerRecord (params) {
@@ -948,24 +973,24 @@ function LocationDeviceObject () {
               if (err) {
                 return q.reject(err);
               }
-              deviceFn.saveUserLastTaggedLocation(userId, body.location.id)
-              .then(function () {
-                return q.resolve(true);
-              }, function (err) {
-                return q.reject(err);
-              });
+              return q.resolve(true);
+              // deviceFn.saveUserLastTaggedLocation(userId, body.location.id)
+              // .then(function () {
+              // }, function (err) {
+              //   return q.reject(err);
+              // });
             });
           }
         });
       } else {
         deviceFn.addNewLocation(userId, body)
         .then(function (locData) {
-            deviceFn.saveUserLastTaggedLocation(locData.author, locData._id)
-            .then(function () {
-              return q.resolve(true);
-            }, function (err) {
-              return q.reject(err);
-            });
+            return q.resolve(true);
+            // deviceFn.saveUserLastTaggedLocation(locData.author, locData._id)
+            // .then(function () {
+            // }, function (err) {
+            //   return q.reject(err);
+            // });
         }, function (err) {
           return q.reject(err);
         });
@@ -1016,7 +1041,7 @@ function LocationDeviceObject () {
       return q.promise;
   };
 
-  LocationDeviceObject.prototype.listLocationsByParams = function listLocationsByParams (userId, params, listType) {
+  LocationDeviceObject.prototype.listLocationsByParams = function listLocationsByParams (user, params, listType) {
     console.log('listing device by params');
       var q = Q.defer(), task = {};
 
@@ -1035,6 +1060,9 @@ function LocationDeviceObject () {
         break;
         case 'list_all_locations':
         task.task = deviceFn.fetchLocationsByParams;
+        if (params.entry_type === 'user') {
+          params.assignee = user.email;
+        }
         task.args = [params];
         break;
         case 'count_locations':
@@ -1086,11 +1114,11 @@ function LocationDeviceObject () {
 
 
 
-  LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (authorId, group) {
+  LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, group) {
     var q = Q.defer();
     var params = {
-      // author: authorId,
-      // assignee: authorId
+      currentGroup: group || 'a',
+      assignee: userId
     };
 
     deviceFn.listQuestionsByParams(params)

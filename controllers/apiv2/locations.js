@@ -27,10 +27,9 @@ module.exports.routes = function (app) {
 
   app.route('/api/v2/locations')
   .get(function (req, res, next) {
-    var ld = new LocationsDevices();
-    var userId = req.user._id;
+    var user = req.user;
     if (req.query.listType === 'list_all_locations') {
-      list_all_locations(userId, req, res, next);
+      list_all_locations(user, req, res, next);
     }
     if (req.query.listType === 'search') {
       search_for_location(req, res, next);
