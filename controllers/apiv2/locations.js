@@ -1,4 +1,7 @@
-var LocationsDevices = require('../../models/device');
+var LocationsDevices = require('../../models/device'),
+    upload = require('multer')({'dest': 'assets/'}),
+    fs = require('fs'),
+    path = require('path');
 
 
 function list_all_locations (userId, req, res, next) {
@@ -36,6 +39,13 @@ module.exports.routes = function (app) {
     }
   });
 
+  app.route('/api/v2/locations/:locationId/assets/:filename')
+  .get(function (req, res, next) {
+    res.json({});
+  })
+  .post(upload.single('location_asset'), function (req, res, next) {
+    res.json(req.file);
+  });
   app.route('/api/v2/locations/:locationId')
   .get(function (req, res, next) {
     var ld = new LocationsDevices(), task = {};
