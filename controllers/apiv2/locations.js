@@ -44,7 +44,10 @@ module.exports.routes = function (app) {
     res.json({});
   })
   .post(upload.single('location_asset'), function (req, res, next) {
-    res.json(req.file);
+    fs.rename(oldPath, newPath, function () {
+      res.json(req.file);
+    });
+
   });
   app.route('/api/v2/locations/:locationId')
   .get(function (req, res, next) {

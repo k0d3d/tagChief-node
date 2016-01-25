@@ -14,6 +14,20 @@ module.exports.routes = function (app) {
     });
   });
 
+  app.delete('/api/v2/questions/:qid', function (req, res, next) {
+    var ld = new PimpCup();
+    var isAdmin;
+    if (req.user.email === 'super.user@tagchief.com') {
+      isAdmin = true;
+    }
+
+    ld.removeUserQuestion(req.params.qid, req.user.email, isAdmin, req.user._id)
+    .then(function (r) {
+      res.json(r);
+    }, function (err) {
+      next(err);
+    });
+  });
   app.post('/api/v2/questions', function (req, res, next) {
     var pimply = new PimpCup();
     pimply.insertQuestion(req.user._id, req.body)

@@ -58,6 +58,7 @@ function afterResourceFilesLoad() {
 
     // make everything in the public folder publicly accessible - do this high up as possible
     app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + '/assets'));
 
     // set compression on responses
     app.use(compress({

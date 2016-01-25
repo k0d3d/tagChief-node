@@ -14,6 +14,28 @@
 
 
 var deviceFn = {
+  deleteQuestion: function deleteQuestion (params) {
+    var q = Q.defer(), k = {};
+
+    k._id = params.id;
+    k.assignee = params.assignee;
+    if (params.author) {
+      k.author = params.author;
+    }
+    Questions.remove(k)
+    .exec(function(err, d) {
+      if (err) {
+        return q.reject(err);
+      }
+      if (!d) {
+        return q.reject(new Error('OperationalError'))
+      }
+      if (d) q.resolve(d);
+    });
+
+
+    return q.promise;
+  },
   listQuestionsByParams: function listQuestionsByParams (params) {
     var q = Q.defer();
     params = params || {};
@@ -1112,7 +1134,26 @@ function LocationDeviceObject () {
     return q.promise;
   };
 
+  LocationDeviceObject.prototype.removeUserQuestion = function removeUserQuestion (id, assignee, isAdmin, author) {
+    var q = Q.defer();
 
+    if (!assignee && !isAdmin) {
+      q.reject(new Error('UnauthorizedOperation'));
+      return q.promise;
+    }
+    deviceFn.deleteQuestion({
+      id: id,
+      author: author,
+      assignee: assignee
+    })
+    .then(function (d) {
+      q.resolve(d);
+    }, function (err) {
+      q.reject(err);
+    });
+
+    return q.promise;
+  }
 
   LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, group) {
     var q = Q.defer();
