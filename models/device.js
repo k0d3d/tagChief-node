@@ -1121,7 +1121,7 @@ function LocationDeviceObject () {
     qq.assignee =  body.email_assignee;
     qq.title =  body.questions[0];
     qq.preferred =  body.response_type;
-    qq.currentGroup = body.currentGroup;
+    qq.currentGroup = body.currentGroup || 'a';
     qq.promptAfter = body.promptAfter;
 
     qq.save(function (err) {
@@ -1153,12 +1153,12 @@ function LocationDeviceObject () {
     });
 
     return q.promise;
-  }
+  };
 
   LocationDeviceObject.prototype.listQuestionsByParams = function listQuestionsByParams (userId, group) {
     var q = Q.defer();
     var params = {
-      // currentGroup: group || 'a',
+      currentGroup: group || 'a',
       assignee: userId
     };
 
@@ -1193,12 +1193,12 @@ function LocationDeviceObject () {
       .then(function (checkInId) {
         var pro = CheckLog.populate(checkInId, {
           path: 'locationId',
-          select: 'name category dateAdded',
+          select: 'name category dateAdded authority',
           model: 'Location'
         });
         pro.then(function (doc) {
           Questions.find({
-            // assignee:
+            assignee: doc.locationId.authority[0].userId
           })
           .exec(function (err, qt) {
             if (err) {
@@ -1207,7 +1207,7 @@ function LocationDeviceObject () {
             var docO = doc.toObject();
             docO.questions = qt;
             return q.resolve(docO);
-          })
+          });
 
         });
         //actions like reward a user / location should follow

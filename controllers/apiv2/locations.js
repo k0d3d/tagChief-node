@@ -44,8 +44,10 @@ module.exports.routes = function (app) {
     res.json({});
   })
   .post(upload.single('location_asset'), function (req, res, next) {
-    fs.rename(oldPath, newPath, function () {
-      res.json(req.file);
+    var newfilename = req.file.originalname + req.file.filename + Date.now() + '.jpg';
+    fs.rename(path.join(req.file.path), path.join(req.file.destination, newfilename), function () {
+
+      res.json({filename: newfilename});
     });
 
   });
@@ -74,6 +76,11 @@ module.exports.routes = function (app) {
       next(err);
     });
   });
+  // app.route('/api/v2/locations/:locationId/questions')
+  // .get(function (req, res, next) {
+  //   var ld = new LocationsDevices();
+  //   //seek the
+  // });
 
   app.route('/api/v2/feedback')
   .get(function (req, res, next) {
