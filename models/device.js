@@ -1,3 +1,4 @@
+
   var errors = require('../lib/errors.js'),
       GPushMessenger = require('../lib/gcm.js'),
       GooglePlaces = require('googleplaces'),
@@ -148,11 +149,23 @@ var deviceFn = {
    */
   addNewLocation : function addNewLocation (userId, body) {
       var q = Q.defer();
+      var coords = [parseFloat(body.lon), parseFloat(body.lat)];
+      if (coords.length < 2) {
+        q.reject(new Error('Coords not available. Tagging Aborted'));
+        return q.promise;
+      }
       var l = new TCLocation(body);
-      l.coords =  [parseFloat(body.lon), parseFloat(body.lat)];
+      l.coords =  coords;
       l.longitude = body.lon;
       l.latitude = body.lat;
       l.author = userId;
+      l.entry_type = 'user';
+      l.authority.push(
+          {
+              'userId' : 'super.user@tagechief.com',
+              'author' :userId,
+          }
+      );
       l.save(function (err, saveDoc) {
         if (err) {
           return q.reject(err);
@@ -231,9 +244,8 @@ var deviceFn = {
           limit = query.limit || 10,
           page = query.page || 0,
           // maxDistance = query.maxDistance || 0.9;
-          maxDistance = query.maxDistance || 0.90;
+          maxDistance = query.maxDistance || 0.29;
           maxDistance = maxDistance/111.12; // correct value
-          // maxDistance = 0.30/111.12; // correct value nmachi2010
 
       if (geoCoords.length !== 2) {
         return q.reject(errors.nounce('InvalidParams'));
@@ -728,6 +740,33 @@ var deviceFn = {
     //   }
     //   q.reject(new Error ('update failed'));
     // });
+    return q.promise;
+  },
+  upsertAnswerRecord : function upsertAnswerRecord(params) {
+      var q = Q.defer(),
+      omittedParams = _.omit(params, ['_id', '__v']);
+
+    FeedBackAnswers.update({
+      checkInId: params.checkInId,
+      locationId: params.locationId,
+      clientPrimaryId     : params.clientPrimaryId,
+      questions : params.questions
+    },{
+      $set: omittedParams
+    }, {
+      upsert: true
+    },
+    function (err, doc) {
+      if (err) {
+        return q.reject(err);
+      }
+      if (!doc.n) {
+        return q.reject(errors.nounce('UpdateFailed'));
+      }
+
+      return q.resolve(doc);
+    });
+
     return q.promise;
   },
   addCheckinAnswerRecord: function addCheckinAnswerRecord (params) {
@@ -1275,7 +1314,7 @@ function LocationDeviceObject () {
   LocationDeviceObject.prototype.saveFeedback = function (body) {
       var q = Q.defer();
 
-      deviceFn.addCheckinAnswerRecord(body)
+      deviceFn.upsertAnswerRecord(body)
       .then(function() {
         return q.resolve();
       }, function (err) {
