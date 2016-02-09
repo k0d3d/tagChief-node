@@ -75,7 +75,7 @@ var userFunctions = {
             if (i > 0) {
                 return d.resolve(false);
             }
-            return d.resolve(true);
+            return d.resolve(data);
         });
 
         return d.promise;
@@ -656,21 +656,35 @@ var userFunctions = {
     },
     updateUserProfile: function updateUserProfile (data) {
       var q = Q.defer();
+      var doNotUpdate = [
+        '_id',
+        '__v',
+        'photo',
+        'lastTaggedLocation',
+        'lastSeenAt',
+        'email',
+        'username',
+        'password',
+        'type',
+        'password_reset_token',
+        'createdOn',
+        'lastLoggedInOn',
+        'lastUpdatedOn',
+        'verifiedEmailOn',
+        'verifiedEmailAddress',
+        'disabledOn'
+        ];
 
       UserModel.update({
-        _id: data.userId
-      }, {
-        firstname: data.firstname,
-        lastname: data.lastname,
-        phoneNumber: data.phoneNumber
-      }, function (err, i ) {
+        _id: data._id
+      }, _.omit(data, doNotUpdate), function (err, i ) {
           if (err) {
               q.reject(err);
           }
-          if (i > 0) {
+          if (i.n > 0) {
               q.resolve(true);
           }
-          if(i === 0 ) {
+          else {
               q.reject(errors.nounce('UpdateFailed'));
           }
       });
@@ -847,7 +861,9 @@ User.prototype.createSkeletonUser = function(options) {
     //TODO: Do validation here
     var userInfo = options;
     var user = userFunctions.validateUser(userInfo);
-    user.then(userFunctions.encryptPassword).then(userFunctions.saveBasicProfileData).then(userFunctions.saveAuditInformation).then(userFunctions.saveExtendedProfileData).then(function(r) {
+    user.then(userFunctions.encryptPassword)
+    .then(userFunctions.saveBasicProfileData)
+    .then(function(r) {
         // console.log('in finish');
         d.resolve(userInfo);
     }).
@@ -869,9 +885,7 @@ User.prototype.saveUserExtendedProfile = function(options) {
         d.resolve(r);
     }).
     catch (function(err) {
-        userFunctions.somethingWrongDuringSignup.then(function(r) {
-            return d.reject(r);
-        });
+        return d.reject(err);
     });
 
     return d.promise;
@@ -1177,12 +1191,7 @@ User.prototype.updateUserAccount = function (userId, userData) {
   switch (userData.scope) {
     case 'PROFILE':
     task = userFunctions.updateUserProfile;
-    taskData = {
-        firstname: userData.firstname,
-        lastname: userData.lastname,
-        phoneNumber: userData.phoneNumber,
-        userId: userId
-      };
+    taskData = userData;
     break;
     case 'ACCOUNT':
     task = userFunctions.updateUserAccountPassword;

@@ -1391,7 +1391,7 @@ function LocationDeviceObject () {
       }, function (err) {
         result.errorArray.push(err);
         if (locationList.length) {
-          recursive_callback(locationList)
+          recursive_callback(locationList);
         } else {
           q.resolve(result);
         }

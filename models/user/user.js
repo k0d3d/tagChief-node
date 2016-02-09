@@ -46,6 +46,7 @@ var UserSchema = new Schema({
     verifiedEmailAddress: { type: Boolean, default: false},
     disabledOn: { type: Date },
     enabled: { type: Boolean, default: true },
+    user_type: {type: String, default: 'user'},
     /*
     oauth2
      */
@@ -77,6 +78,11 @@ UserSchema.pre('save', function(next) {
     else
         next();
 });
+
+/**
+ * post hooks
+ */
+
 
 /**
  * Methods
