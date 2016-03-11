@@ -23,6 +23,19 @@ module.exports.routes = function (app) {
     });
   });
 
+  app.route('/api/v2/users/me')
+    //updates the profile for the currently
+  //logged in user
+  .get(function (req, res, next) {
+    var userId = req.user._id;
+    var users = new User();
+    users.findUserObject({'_id': userId})
+    .then(function (r) {
+      res.json(r);
+    }, function (err) {
+      next(err);
+    });
+  });
   app.route('/api/v2/users/:userId')
     //updates the profile for the currently
   //logged in user

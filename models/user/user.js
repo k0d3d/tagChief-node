@@ -36,6 +36,7 @@ var UserSchema = new Schema({
     password: String,
     type: { type: String, default: 'user' },
     password_reset_token: { type: String},
+    avatar_url: { type: String},
     /*
     loggin and audit
      */
