@@ -23,7 +23,7 @@
         }
     },
     "tagChiefOAuth": {
-        "server" : "http://localhost:3333/",
+        "server" : "http://tagchief-server.i-x.it",
         "authenticationUrl" : "/api/v1/users/auth",
         "clientCheckUrl" : "/api/v1/clients/%s?field_type=email",
         "authorizationUrl" : "/oauth/token",
