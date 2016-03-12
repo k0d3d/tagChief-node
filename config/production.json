@@ -25,6 +25,6 @@
     },
     "app": {
         "name": "Tag Chief API Server",
-        "server": "stark-cliffs-8842.herokuapp.com"
+        "server": "http://tagchief-server.i-x.it/"
     }
 }
