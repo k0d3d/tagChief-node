@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "TagChief Mobile",
+        "name": "TagChief-Server",
         "home": "tagChief-node"
     },
     "es" : {
@@ -21,13 +21,6 @@
             "maxAge": 3600
           }
         }
-    },
-    "tagChiefOAuth": {
-        "server" : "http://tagchief-server.i-x.it/",
-        "authenticationUrl" : "/api/v1/users/auth",
-        "clientCheckUrl" : "/api/v1/clients/%s?field_type=email",
-        "authorizationUrl" : "/oauth/token",
-        "redirectUrl": "/auth_callback"
     },
     "mail" : {
         "defaultService": "postmark",

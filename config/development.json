@@ -8,8 +8,7 @@
     },
     "app": {
         "name": "TagChief Mobile",
-        "home": "tagChief-node",
-        "server": "http://localhost:3000/"
+        "home": "tagChief-node"
     },
     "tagChiefOAuth": {
         "server" : "http://localhost:3333/",
