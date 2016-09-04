@@ -31,6 +31,7 @@ module.exports.routes = function (app) {
   app.route('/api/v2/locations')
   .get(function (req, res, next) {
     var user = req.user;
+    // fetches all locations
     if (req.query.listType === 'list_all_locations') {
       list_all_locations(user, req, res, next);
     }
@@ -56,6 +57,11 @@ module.exports.routes = function (app) {
     var ld = new LocationsDevices(), task = {};
     var userId = req.user._id;
     switch(req.query.listType) {
+      // this should call the method that fetches
+      // all the activities belonging to a location
+      // these activities have to be filtered to
+      // contain only results from locations that
+      // the currently logged in user is.
       case 'activity':
       task.task = ld.getLocationActivity;
       task.params = [req.params.locationId];
@@ -85,7 +91,12 @@ module.exports.routes = function (app) {
   app.route('/api/v2/feedback')
   .get(function (req, res, next) {
     var ld = new LocationsDevices();
-    ld.getFeedback(req.query)
+    // this will attempt to get all feedback records
+    // for all locations the currently logged in
+    // user is allowed to see.
+    // email
+    var email = req.user.email;
+    ld.getFeedback(email)
     .then(function (docs) {
       return res.json(docs);
     }, function (err) {

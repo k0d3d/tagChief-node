@@ -1,4 +1,9 @@
-
+/**
+ * locations on tagchief are split into two kinds.
+ * you have the system locations, which are added
+ * from imports and google place locations which.
+ * @type {[type]}
+ */
   var errors = require('../lib/errors.js'),
       GPushMessenger = require('../lib/gcm.js'),
       GooglePlaces = require('googleplaces'),
@@ -77,6 +82,7 @@ var deviceFn = {
   queryFeedback: function queryFeedback (params) {
     params = params || {};
     var q = Q.defer();
+    console.log(params)
     FeedBackAnswers.find(params)
     .limit(30)
     .populate({path: 'checkInId', model: 'Checklog'})
@@ -100,6 +106,20 @@ var deviceFn = {
             return q.resolve([]);
           }
     });
+    return q.promise;
+  },
+  findLocationsByMe: function findLocationsByMe (userId){
+    var q = Q.defer();
+    TCLocation.find({
+      'authority.userId' : userId
+    }, 'name')
+    .exec(function (err, docs) {
+      if (err) {
+        return q.reject(err);
+      }
+      q.resolve(docs);
+    });
+
     return q.promise;
   },
   findCheckInFeedback: function findCheckInFeedback (params) {
@@ -162,7 +182,7 @@ var deviceFn = {
       l.entry_type = 'user';
       l.authority.push(
           {
-              'userId' : 'super.user@tagechief.com',
+              'userId' : 'super.user@tagchief.com.ng',
               'author' :userId,
           }
       );
@@ -500,7 +520,6 @@ var deviceFn = {
       };
 
     }
-
     var dbQuery = TCLocation.find(conditions);
 
     dbQuery.limit(params.rpp || 100);
@@ -516,17 +535,6 @@ var deviceFn = {
     if (params.assignee) {
       dbQuery.where('authority.userId', params.assignee);
     }
-
-    // if (Boolean(params.is_search) && params.search_query && params.search_query.length) {
-    //   _.each(params.search_query, function (field, condition) {
-    //     // console.log(field);
-    //     // console.log(condition);
-    //     if (field && condition.operate && condition.value) {
-    //       console.log(dbQuery.where(field)[condition.operate](condition.value));
-    //       dbQuery.where(field)[condition.operate](condition.value);
-    //     }
-    //   });
-    // }
 
     dbQuery.sort({dateAdded: -1});
     var populate_str = {path: 'author', select: 'email', model: 'User'};
@@ -552,6 +560,16 @@ var deviceFn = {
 
     return q.promise;
   },
+  /**
+   * fetches all the check-ins that
+   * have been generated on one location.
+   * The query can be filtered by passing
+   * an object in query property of params
+   * argument.
+   * @param  {[type]} params An object with the locationId and a query
+   * to filter the results.
+   * @return {[type]}        [description]
+   */
   fetchLocationActivity: function fetchLocationActivity (params) {
     console.log('fetch location');
     var q = Q.defer();
@@ -1324,11 +1342,12 @@ function LocationDeviceObject () {
       return q.promise;
   };
 
-  LocationDeviceObject.prototype.getLocationActivity = function getLocationActivity (locationId) {
+  LocationDeviceObject.prototype.getLocationActivity = function getLocationActivity (locationId, query) {
     var q = Q.defer();
 
     deviceFn.fetchLocationActivity({
-      locationId : locationId
+      locationId : locationId,
+      query: query
     })
     .then(function (docs) {
       return q.resolve(docs);
@@ -1496,15 +1515,29 @@ function LocationDeviceObject () {
     return q.promise;
   };
 
-  LocationDeviceObject.prototype.getFeedback = function getFeedback () {
+  /**
+   * gets all the feedback that the currently
+   * logged in user is authorized to see.
+   * this should be combined with a locationId.
+   *
+   * @return {[type]} [description]
+   */
+  LocationDeviceObject.prototype.getFeedback = function getFeedback (email) {
     var q = Q.defer();
 
-    deviceFn.queryFeedback({})
-    .then(function (docs) {
-      q.resolve(docs);
-    }, function (err) {
-      q.reject(err);
-    });
+    deviceFn.findLocationsByMe(email)
+    .then(function (locations) {
+      console.log(locations);
+      deviceFn.queryFeedback({
+        locationId: {$in: locations}
+      })
+      .then(function (docs) {
+        q.resolve(docs);
+      }, function (err) {
+        q.reject(err);
+      });
+    })
+
 
     return q.promise;
   };

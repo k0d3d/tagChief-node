@@ -76,9 +76,15 @@ module.exports.routes = function (app) {
 
   app.route('/api/v1/locations/:locationId')
   .get(function (req, res, next) {
-    console.log('thisfat');
     var dev = new TCLocations();
-    dev.getOneLocation(req.params.locationId)
+    // fetch the data on one location
+    // if this query contains a query string,
+    // the object returned contains [activities]
+    var action = (req.query.dateTriggered) ?
+      dev.getLocationActivity:
+      dev.getOneLocation;
+
+    action(req.params.locationId, req.query)
     .then(function (ld) {
       return res.json(ld);
     }, function (err) {
