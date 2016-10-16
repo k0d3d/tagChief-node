@@ -81,7 +81,7 @@ module.exports.routes = function (app) {
     // if this query contains a query string,
     // the object returned contains [activities]
     var action = (req.query.dateTriggered) ?
-      dev.getLocationActivity:
+      dev.getLocationOverview:
       dev.getOneLocation;
 
     action(req.params.locationId, req.query)

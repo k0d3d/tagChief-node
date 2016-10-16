@@ -82,7 +82,6 @@ var deviceFn = {
   queryFeedback: function queryFeedback (params) {
     params = params || {};
     var q = Q.defer();
-    console.log(params)
     FeedBackAnswers.find(params)
     .limit(30)
     .populate({path: 'checkInId', model: 'Checklog'})
@@ -119,6 +118,23 @@ var deviceFn = {
       }
       q.resolve(docs);
     });
+
+    return q.promise;
+  },
+  allLocationFeedback: function allLocationFeedback (params) {
+    var q = Q.defer();
+
+    FeedBackAnswers.find({
+      locationId: params.locationId
+    })
+    .sort({'timeUpdated': -1})
+    .exec(function (err, d) {
+      if (err) {
+        return q.reject(err);
+      }
+      return q.resolve(d);
+    })
+
 
     return q.promise;
   },
@@ -570,8 +586,7 @@ var deviceFn = {
    * to filter the results.
    * @return {[type]}        [description]
    */
-  fetchLocationActivity: function fetchLocationActivity (params) {
-    console.log('fetch location');
+  fetchLocationCheckInRecords: function fetchLocationCheckInRecords (params) {
     var q = Q.defer();
     params = params || {};
 
@@ -1342,10 +1357,20 @@ function LocationDeviceObject () {
       return q.promise;
   };
 
+  /**
+   * not minding the method name, this attempts
+   * to query and produce all checkins ordered
+   * by the most recent for a specific location.
+   * @param  {[type]} locationId the _id of the
+   * location in subject.
+   * @param  {[type]} query      query stuff like
+   * filters etc.
+   * @return {[type]}            [description]
+   */
   LocationDeviceObject.prototype.getLocationActivity = function getLocationActivity (locationId, query) {
     var q = Q.defer();
 
-    deviceFn.fetchLocationActivity({
+    deviceFn.fetchLocationCheckInRecords({
       locationId : locationId,
       query: query
     })
@@ -1357,6 +1382,27 @@ function LocationDeviceObject () {
 
     return q.promise;
   };
+
+  /**
+   * fetches all feedback given
+   * for a specific location
+   */
+  LocationDeviceObject.prototype.getLocationOverview = function (locationId, query_params) {
+    var q = Q.defer();
+
+    deviceFn.allLocationFeedback({
+      locationId : locationId,
+      query: query_params,
+      public: true
+    })
+    .then(function (docs) {
+      return q.resolve(docs);
+    }, function (err) {
+      return q.reject(err);
+    });
+
+    return q.promise;
+  }
 
   /**
    * this should add or remove certain properties /
@@ -1536,7 +1582,7 @@ function LocationDeviceObject () {
       }, function (err) {
         q.reject(err);
       });
-    })
+    });
 
 
     return q.promise;
