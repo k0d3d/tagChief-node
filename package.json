@@ -40,7 +40,7 @@
     "geolib": "^2.0.14",
     "googleplaces": "0.5.1",
     "hooks": "^0.3.2",
-    "pug": "latest",
+    "jade": "latest",
     "jsonwebtoken": "^1.1.2",
     "lingua": "^0.4.0",
     "lodash": "latest",
