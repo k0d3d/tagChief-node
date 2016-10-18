@@ -40,7 +40,7 @@
     "geolib": "^2.0.14",
     "googleplaces": "0.5.1",
     "hooks": "^0.3.2",
-    "jade": "latest",
+    "pug": "latest",
     "jsonwebtoken": "^1.1.2",
     "lingua": "^0.4.0",
     "lodash": "latest",
@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "eslint": "^3.8.1",
-    "eslint-config-google": "^0.6.0",
+    "eslint-config-google": "^0.6.0"
   },
   "engines": {
     "node": "6.0.0",
