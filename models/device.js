@@ -20,6 +20,38 @@
 
 
 var deviceFn = {
+  recur_add: function recur_add (gLocationArray, cb) {
+        var g = gLocationArray.pop(),
+            self = this;
+        TCLocation.update({
+          google_place_id: g.place_id
+        }, {
+          $set: {
+            name: g.name,
+            category: g.types[0],
+            coords: [g.geometry.location.lng, g.geometry.location.lat],
+            tags: g.types,
+            longitude: g.geometry.location.lng,
+            latitude: g.geometry.location.lat,
+            lon: g.geometry.location.lng,
+            lat: g.geometry.location.lat,
+            address: g.vicinity,
+            state: g.vicinity,
+            google_place_id: g.place_id,
+            entry_type: 'system'
+          },
+        }, {upsert: true})
+        .exec(function (err, d) {
+          if (err) {
+            console.log(err);
+          }
+          if (gLocationArray.length) {
+            self.recur_add(gLocationArray, cb);
+          } else {
+            cb();
+          }
+        });
+  },
   deleteQuestion: function deleteQuestion (params) {
     var q = Q.defer(), k = {};
 
@@ -287,50 +319,22 @@ var deviceFn = {
         return q.reject(errors.nounce('InvalidParams'));
       }
 
-      function recur_add (gLocationArray, cb) {
-        var g = gLocationArray.pop();
-        TCLocation.update({
-          google_place_id: g.place_id
-        }, {
-          $set: {
-            name: g.name,
-            category: g.types[0],
-            coords: [g.geometry.location.lng, g.geometry.location.lat],
-            tags: g.types,
-            longitude: g.geometry.location.lng,
-            latitude: g.geometry.location.lat,
-            lon: g.geometry.location.lng,
-            lat: g.geometry.location.lat,
-            address: g.vicinity,
-            state: g.vicinity,
-            google_place_id: g.place_id,
-            entry_type: 'system'
-          },
-        }, {upsert: true})
-        .exec(function (err, d) {
-          if (err) {
-            console.log(err);
-          }
-          if (gLocationArray.length) {
-            recur_add(gLocationArray, cb);
-          } else {
-            cb();
-          }
-        });
-      }
-
       var googlePlaces = new GooglePlaces('AIzaSyCOt9IYHpYN22m7alw_HKi5y5WBgu57p4s', 'json');
       googlePlaces.placeSearch({
         location: [geoCoords[1], geoCoords[0]],
         types: "atm|gas_station"
       }, function (error, response) {
           // if (error) throw error;
+          // if no errors are found and the response 
+          // contains a results . Use the recursive 
+          // function recur_add to add the found results
+          // from google to our database. 
           if (!error && response && response.status === 'OK' && response.results.length) {
 
-            recur_add(response.results, function () {
+            deviceFn.recur_add(response.results, function () {
 
               TCLocation.find({
-                entry_type: 'user',
+                entry_type: 'system',
                 coords: {
                   "$near": geoCoords,
                   "$maxDistance": maxDistance
@@ -352,7 +356,7 @@ var deviceFn = {
             });
           } else {
               TCLocation.find({
-                entry_type: 'user',
+                entry_type: 'system',
                 coords: {
                   "$near": geoCoords,
                   "$maxDistance": maxDistance
@@ -1135,38 +1139,43 @@ function LocationDeviceObject () {
       return q.promise;
   };
 
-  LocationDeviceObject.prototype.listLocationsByParams = function listLocationsByParams (user, params, listType) {
+  LocationDeviceObject.prototype.listLocationsByParams = function listLocationsByParams (user, coords, params) {
     console.log('listing device by params');
-      var q = Q.defer(), task = {};
+      var q = Q.defer(), task = {}, self = this;
 
-      switch (listType) {
+      switch (params.listType) {
         case 'checkin':
-        task.task = deviceFn.findUserCheckedInLocations;
-        task.args = [];
-        break;
+          task.task = deviceFn.findUserCheckedInLocations;
+          task.args = [];
+          break;
         case 'authored':
-        task.task = deviceFn.findLocationsByMe;
-        task.args = [];
-        break;
+          task.task = deviceFn.findLocationsByMe;
+          task.args = [];
+          break;
         case 'count_places_near_by':
-        task.task = deviceFn.inProximity;
-        task.args = [params.coords, params];
-        break;
+          task.task = deviceFn.inProximity;
+          task.args = [coords, params];
+          break;
         case 'list_all_locations':
-        task.task = deviceFn.fetchLocationsByParams;
-        if (params.entry_type === 'user') {
-          params.assignee = user.email;
-        }
-        task.args = [params];
-        break;
+          task.task = deviceFn.fetchLocationsByParams;
+          if (params.entry_type === 'user') {
+            params.assignee = user.email;
+          }
+          task.args = [params];
+          break;
         case 'count_locations':
-        task.task = deviceFn.countLocationsByParams;
-        break;
+          task.task = deviceFn.countLocationsByParams;
+          break;
+        case 'search': 
+          task.task = self.searchGPlaces;
+          task.args = [params.search, coords]
+          break;
         default:
         task.task = deviceFn.inProximity;
-        task.args = [params.coords, params];
+        task.args = [coords, params];
         break;
       }
+
 
       // deviceFn.inProximity(coords, params)
       task.task.apply(this, task.args)
@@ -1178,6 +1187,74 @@ function LocationDeviceObject () {
 
       return q.promise;
   };
+
+  LocationDeviceObject.prototype.searchGPlaces = function searchGPlaces (keyword, geoCoords, maxDistance = 1, limit = 10, page = 0) {
+    let q = Q.defer();
+
+      var googlePlaces = new GooglePlaces('AIzaSyCOt9IYHpYN22m7alw_HKi5y5WBgu57p4s', 'json');
+      googlePlaces.placeSearch({
+        location: [geoCoords[1], geoCoords[0]], // $nearSphere
+        keyword: keyword
+      }, function (error, response) {
+          // if (error) throw error;
+          // if no errors are found and the response 
+          // contains a results . Use the recursive 
+          // function recur_add to add the found results
+          // from google to our database. 
+          if (!error && response && response.status === 'OK' && response.results.length) {
+
+            deviceFn.recur_add(response.results, function () {
+
+              TCLocation.find({
+                name: new RegExp(keyword, 'i'),
+                entry_type: 'system',
+                coords: {
+                  "$nearSphere": geoCoords,
+                  "$maxDistance": maxDistance
+                }
+              })
+              .limit(limit)
+              .skip(limit * page)
+              .exec(function (err, locations) {
+                if (err) {
+                  return q.reject(err);
+                }
+
+                if (locations.length) {
+
+                  return q.resolve(locations);
+                }
+                return q.resolve([]);
+              });
+            });
+          } else {
+              TCLocation.find({
+                name: new RegExp(keyword, 'i'),
+                entry_type: 'system',
+                coords: {
+                  "$nearSphere": geoCoords,
+                  "$maxDistance": maxDistance
+                }
+              })
+              .limit(limit)
+              .skip(limit * page)
+              .exec(function (err, locations) {
+                if (err) {
+                  return q.reject(err);
+                }
+
+                if (locations.length) {
+
+                  return q.resolve(locations);
+                }
+                return q.resolve([]);
+              });
+          }
+          // console.log(response);
+      });
+
+    return q.promise;
+  }
 
   /**
    * adds a new question to the database

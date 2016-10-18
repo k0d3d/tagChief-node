@@ -6,7 +6,11 @@ var LocationsDevices = require('../../models/device'),
 
 function list_all_locations (userId, req, res, next) {
     var ld = new LocationsDevices();
-    ld.listLocationsByParams(userId, req.query, req.query.listType)
+    ld.listLocationsByParams(
+      userId, 
+      req.query, 
+      req.query
+    )
     .then(function (users_list) {
       res.json(users_list);
     }, function (err) {

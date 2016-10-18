@@ -96,7 +96,7 @@ function afterResourceFilesLoad() {
 
     // setup session management
     console.log('setting up session management, please wait...');
-    var REDIS = url.parse(process.env.REDIS_URL);
+    var REDIS = url.parse(config.REDIS_URL || process.env.REDIS_URL);
     var redis_pass;
     if (REDIS.auth) {
       var REDIS_AUTH = REDIS.auth.split(':');

@@ -23,10 +23,14 @@ module.exports.routes = function (app) {
     .then(function (userData) {
       // res.json(true);
       var dev = new TCLocations();
-      dev.listLocationsByParams(req.user._id, coordsInRequest, {
-        listType: (req.body.shouldPromptCheckIn ) ? 'CHECKIN' : 'countPlacesNearBy',
-        limit: req.body.shouldPromptCheckIn || 1
-      })
+      dev.listLocationsByParams(
+        req.user._id, 
+        coordsInRequest, 
+        {
+          listType: (req.body.shouldPromptCheckIn ) ? 'CHECKIN' : 'countPlacesNearBy',
+          limit: req.body.shouldPromptCheckIn || 1
+        }
+      )
       .then(function (locationList) {
         return res.json(locationList[0]);
         //should send push notifications
@@ -121,10 +125,18 @@ module.exports.routes = function (app) {
   app.get('/api/v1/locations', function (req, res, next) {
     var dev = new TCLocations();
     if (!req.query.lat || !req.query.lon) return next(errors.nounce('InvalidParams'));
-    dev.listLocationsByParams(req.user._id, [parseFloat(req.query.lon), parseFloat(req.query.lat)], {
-      limit: req.query.loadPerRequest,
-      maxDistance: req.query.maxDistance || 1
-    })
+    dev.listLocationsByParams(
+      req.user._id, 
+      // google says, it must be latlng
+      // mongodb on the other hand like lonlat
+      [parseFloat(req.query.lon), parseFloat(req.query.lat)], 
+      {
+        limit: req.query.loadPerRequest,
+        maxDistance: req.query.maxDistance || 1,
+        search: req.query.search,
+        listType: "search"
+      }
+    )
     .then(function (locationList) {
       //should send push notifications
      res.status(200).json(locationList);

@@ -32,5 +32,6 @@
         "clientCheckUrl" : "/api/v1/clients/%s?field_type=email",
         "authorizationUrl" : "/oauth/token",
         "redirectUrl": "/auth_callback"
-    }
+    },
+    "REDIS_URL" : "redis://h:p34vjoeas8j6olfl11suqtophtd@ec2-54-217-206-37.eu-west-1.compute.amazonaws.com:14639"
 }
