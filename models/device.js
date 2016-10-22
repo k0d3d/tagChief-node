@@ -1333,7 +1333,6 @@ function LocationDeviceObject () {
    */
   LocationDeviceObject.prototype.checkIntoLocation = function checkIntoLocation (deviceId, locationId, user) {
       var q = Q.defer();
-
       deviceFn.addACheckInRecord({
         deviceId: deviceId,
         locationId: locationId,
@@ -1346,10 +1345,15 @@ function LocationDeviceObject () {
           model: 'Location'
         });
         pro.then(function (doc) {
+          var assignee = doc.locationId.authority[0] ?  
+              doc.locationId.authority[0].userId : 
+               doc.locationId.category + '@tagchief.com';
           Questions.find({
-            assignee: doc.locationId.authority[0].userId
+            assignee: assignee
           })
           .exec(function (err, qt) {
+            // i guess this pulldown the questions qtbelonging tothis 
+            // /the owner of this location.
             if (err) {
               return q.reject(err);
             }
@@ -1361,9 +1365,11 @@ function LocationDeviceObject () {
         });
         //actions like reward a user / location should follow
       }, function (err) {
+        console.log('an error occured');
         return q.reject(err);
       })
       .catch(function (err) {
+        console.log('an error got caught');
         console.log(err);
         return q.reject(err);
       });
