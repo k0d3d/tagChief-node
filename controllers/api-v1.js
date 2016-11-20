@@ -1,6 +1,7 @@
 var
     appConfig = require('config').express,
     passport = require('passport'),
+    fireman = require('../lib/auth/fireman'),
     cors = require('cors');
 
 module.exports.routes = function (app) {
@@ -11,17 +12,17 @@ module.exports.routes = function (app) {
     });
 
   app.route('/api/v1/*')
-  .all(cors(appConfig.cors.options),
-    function(req, res, next){
-      if (
-        ((req.url == '/api/v1/users' && req.method == 'POST') || (req.url == '/api/v1/users/auth'  && req.method == 'PATCH'))
-      ) {
-        next();
-      } else {
-        passport.isAPIAuthenticated.call(null, req, res, next);
-        // next();
-      }
-    },
+  .all(cors(appConfig.cors.options), fireman(),
+    // function(req, res, next){
+    //   if (
+    //     ((req.url == '/api/v1/users' && req.method == 'POST') || (req.url == '/api/v1/users/auth'  && req.method == 'PATCH'))
+    //   ) {
+    //     next();
+    //   } else {
+    //     passport.isAPIAuthenticated.call(null, req, res, next);
+    //     // next();
+    //   }
+    // },
     // passport.isAPIAuthenticated,
     function (req, res, next) {
       if (req.xhr) {

@@ -1,24 +1,24 @@
 var
-    appConfig = require('config').express,
-    passport = require('passport'),
-    cors = require('cors');
+  appConfig = require('config').express,
+  passport = require('passport'),
+  fireman = require('../lib/auth/fireman'),
+  cors = require('cors');
 
-module.exports.routes = function (app) {
+module.exports.routes = function(app) {
   appConfig.cors.options.origin = true;
   app.options('/api/v2/*', cors(appConfig.cors.options),
-    function (req, res, next) {
+    function(req, res, next) {
       next();
     });
 
   app.route('/api/v2/*')
-  .all(cors(appConfig.cors.options),function(req, res, next) {
+  .all(cors(appConfig.cors.options), function(req, res, next) {
     next();
-  },passport.authenticate('bearer', { session: false }));
+  }, fireman());
 
   require('./apiv2/users').routes(app);
   require('./apiv2/locations').routes(app);
   require('./apiv2/stats').routes(app);
   require('./apiv2/questions').routes(app);
   require('./apiv2/warden').routes(app);
-
 };
