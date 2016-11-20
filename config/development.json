@@ -1,11 +1,12 @@
 {
     "db": {
-        "server": "localhost",
+        "url": "mongodb://heroku_app33864268:oufojfnkdt6dj8hjmqlsqe6e2u@ds041651.mongolab.com:41651/heroku_app33864268",
+        "user": "heroku_app33864268",
+        "password": "oufojfnkdt6dj8hjmqlsqe6e2u",
         "database": "heroku_app33864268",
-        "port": 27017,
-        "user": "",
-        "pass": ""
-    },
+        "port": 41651,
+        "server": "ds041651.mongolab.com"
+        },
     "app": {
         "name": "TagChief Mobile",
         "home": "tagChief-node"
