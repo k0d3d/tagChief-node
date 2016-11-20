@@ -1336,7 +1336,7 @@ function LocationDeviceObject () {
       deviceFn.addACheckInRecord({
         deviceId: deviceId,
         locationId: locationId,
-        userId: user._id
+        userId: user
       })
       .then(function (checkInId) {
         var pro = CheckLog.populate(checkInId, {
@@ -1347,7 +1347,7 @@ function LocationDeviceObject () {
         pro.then(function (doc) {
           var assignee = doc.locationId.authority[0] ?  
               doc.locationId.authority[0].userId : 
-               doc.locationId.category + '@tagchief.com';
+               doc.locationId.category || 'superuser' + '@tagchief.com';
           Questions.find({
             assignee: assignee
           })

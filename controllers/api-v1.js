@@ -1,13 +1,13 @@
 var
-    appConfig = require('config').express,
-    passport = require('passport'),
-    fireman = require('../lib/auth/fireman'),
-    cors = require('cors');
+  appConfig = require('config').express,
+  passport = require('passport'),
+  fireman = require('../lib/auth/fireman'),
+  cors = require('cors');
 
-module.exports.routes = function (app) {
+module.exports.routes = function(app) {
   appConfig.cors.options.origin = true;
   app.options('/api/v1/*', cors(appConfig.cors.options),
-    function (req, res, next) {
+    function(req, res, next) {
       next();
     });
 
@@ -24,16 +24,15 @@ module.exports.routes = function (app) {
     //   }
     // },
     // passport.isAPIAuthenticated,
-    function (req, res, next) {
+    function(req, res, next) {
       if (req.xhr) {
-        res.set('WWW-Authenticate',  'xBasic realm="Users"');
+        res.set('WWW-Authenticate', 'xBasic realm="Users"');
       }
       next();
     });
 
-  //testing if server is online...
-  app.get('/api/v1/routetest', function (req, res) {
+  // testing if server is online...
+  app.get('/api/v1/routetest', function(req, res) {
     res.json(200, true);
   });
-
 };

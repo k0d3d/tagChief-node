@@ -63,7 +63,7 @@ var CheckInSchema = new Schema ({
   locationId: {type: Schema.ObjectId},
   checkInTime: {type: Date, default: Date.now},
   checkOutTime: {type: Date},
-  userId: {type: Schema.ObjectId},
+  userId: {type: String},
   deviceId: {type: String},
   category: {type: String},
   questions: []
