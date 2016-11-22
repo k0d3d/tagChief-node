@@ -1347,9 +1347,9 @@ function LocationDeviceObject () {
         pro.then(function (doc) {
           var assignee = doc.locationId.authority[0] ?  
               doc.locationId.authority[0].userId : 
-               doc.locationId.category || 'superuser' + '@tagchief.com';
+               doc.locationId.category || 'superuser';
           Questions.find({
-            assignee: assignee
+            assignee: assignee + '@tagchief.com'
           })
           .exec(function (err, qt) {
             // i guess this pulldown the questions qtbelonging tothis 
